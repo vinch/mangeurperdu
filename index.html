@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'homme qui ne savait plus manger</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #654074;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .book-image {
+            flex: 0.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .signup-form {
+            flex: 0.4;
+            background: white;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #654074;
+        }
+
+        button {
+            background-color: #654074;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #52335d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .book-image {
+                padding: 1rem;
+            }
+
+            .signup-form {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="book-image">
+            <img src="mockup.jpg" alt="Couverture du livre">
+        </div>
+        <div class="signup-form">
+            <h1>Bientôt disponible !</h1>
+            <p><strong>Le livre arrive bientôt ! Soyez les premiers au courant.</strong><br />Inscrivez-vous pour recevoir une alerte exclusive dès sa sortie.</p>
+            <form id="signup-form">
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+                </div>
+                <button type="submit">Me notifier</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            
+            try {
+                const response = await fetch('https://apgydbcrmczqisjjgttx.supabase.co/functions/v1/save-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                if (response.ok) {
+                    alert('Merci pour votre intérêt ! Nous vous notifierons dès que le livre sera disponible.');
+                    this.reset();
+                } else {
+                    throw new Error('Erreur lors de l\'envoi');
+                }
+            } catch (error) {
+                alert('Une erreur est survenue. Veuillez réessayer.');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html> 
