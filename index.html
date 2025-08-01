@@ -36,6 +36,18 @@
             height: auto;
         }
 
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1em;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
         .signup-form {
             flex: 0.4;
             background: white;
@@ -43,17 +55,53 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 5rem;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
-        p {
-            margin-bottom: 2rem;
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
             color: #666;
+            font-weight: 400;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            background: transparent;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .social-links .instagram:hover {
+            border-color: #e6683c;
+            color: #e6683c;
+        }
+
+        .social-links .youtube:hover {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
+        .social-links svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
 
         .form-group {
@@ -101,6 +149,10 @@
             .signup-form {
                 padding: 2rem;
             }
+
+            .placeholder {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -110,19 +162,38 @@
             <img src="mockup.jpg" alt="Couverture du livre">
         </div>
         <div class="signup-form">
-            <h1>Bientôt disponible !</h1>
-            <p><strong>Le livre arrive bientôt ! Soyez les premiers au courant.</strong><br />Inscrivez-vous pour recevoir une alerte exclusive dès sa sortie.</p>
-            <form id="signup-form">
-                <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
-                </div>
-                <button type="submit">Me notifier</button>
-            </form>
+            <div class="placeholder">&nbsp;</div>
+            <div class="signup-form-content">
+                <h1>Bientôt disponible&nbsp;!</h1>
+                <p><strong>Le livre arrive bientôt ! Soyez les premiers au courant.</strong><br />Inscrivez-vous pour recevoir une alerte exclusive dès sa sortie.</p>
+                <form id="form">
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+                    </div>
+                    <button type="submit">Me notifier</button>
+                </form>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/mangeurperdu" target="_blank" class="instagram">
+                    <svg fill="#ffffff" width="20px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.445 5h-8.891A6.559 6.559 0 0 0 5 11.554v8.891A6.559 6.559 0 0 0 11.554 27h8.891a6.56 6.56 0 0 0 6.554-6.555v-8.891A6.557 6.557 0 0 0 20.445 5zm4.342 15.445a4.343 4.343 0 0 1-4.342 4.342h-8.891a4.341 4.341 0 0 1-4.341-4.342v-8.891a4.34 4.34 0 0 1 4.341-4.341h8.891a4.342 4.342 0 0 1 4.341 4.341l.001 8.891z"/>
+                        <path d="M16 10.312c-3.138 0-5.688 2.551-5.688 5.688s2.551 5.688 5.688 5.688 5.688-2.551 5.688-5.688-2.55-5.688-5.688-5.688zm0 9.163a3.475 3.475 0 1 1-.001-6.95 3.475 3.475 0 0 1 .001 6.95zM21.7 8.991a1.363 1.363 0 1 1-1.364 1.364c0-.752.51-1.364 1.364-1.364z"/>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="https://www.youtube.com/@mangeurperdu" target="_blank" class="youtube">
+                    <svg fill="#ffffff" width="20px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24.325 8.309s-2.655-.334-8.357-.334c-5.517 0-8.294.334-8.294.334A2.675 2.675 0 0 0 5 10.984v10.034a2.675 2.675 0 0 0 2.674 2.676s2.582.332 8.294.332c5.709 0 8.357-.332 8.357-.332A2.673 2.673 0 0 0 27 21.018V10.982a2.673 2.673 0 0 0-2.675-2.673zM13.061 19.975V12.03L20.195 16l-7.134 3.975z"/>
+                    </svg>
+                    YouTube
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
-        document.getElementById('signup-form').addEventListener('submit', async function(e) {
+        document.getElementById('form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
             
