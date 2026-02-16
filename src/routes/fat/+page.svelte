@@ -254,11 +254,6 @@
           contributions (note/5 × poids) pour chaque critère.
         </p>
         <p>
-          Les graisses animales (suif, saindoux, graisse de canard, ghee,
-          beurre) sont N/A à cru : l'usage « à cru » ne leur est pas pertinent
-          dans ce classement, qui ne retient que les huiles pour cet usage.
-        </p>
-        <p>
           Les notes (0/5 à 5/5) pour chaque critère sont attribuées selon des
           grilles explicites à partir des données de composition (acides gras,
           stabilité, raffinage, point de fumée, ancienneté d'usage). Vous pouvez
