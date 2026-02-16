@@ -33,12 +33,21 @@ serve(async (req) => {
       throw new Error("Invalid email");
     }
 
-    // Insert the email into the database
+    const normalizedEmail = email.trim().toLowerCase();
+
+    // Insert only if not already present (client always sees success)
     const { data, error } = await supabaseClient
       .from("email_subscriber")
-      .insert([{ email }]);
+      .insert([{ email: normalizedEmail }]);
 
     if (error) {
+      // Duplicate email (unique constraint) → treat as success, don't reveal it
+      if (error.code === "23505") {
+        return new Response(JSON.stringify({ success: true }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
       console.error("Database error:", error);
       throw error;
     }
