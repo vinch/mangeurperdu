@@ -127,6 +127,9 @@
 <div class="fat-page">
   <header class="fat-header">
     <a href="/" class="back-link">← Retour à l'accueil</a>
+    <span class="fat-version" aria-label="Version et date"
+      >Version 1 / 16 février 2026</span
+    >
   </header>
 
   <main>
@@ -645,8 +648,16 @@
   }
 
   .fat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem 1.25rem;
     border-bottom: 1px solid #eee;
+  }
+
+  .fat-version {
+    font-size: 0.875rem;
+    color: #666;
   }
 
   .back-link {

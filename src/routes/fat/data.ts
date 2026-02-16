@@ -782,9 +782,9 @@ export const FAQ: Array<{ question: string; answer: string }> = [
       "La cuisson douce correspond typiquement à des températures inférieures ou égales à 160 °C (vapeur, étouffée, poêle à feu doux). La cuisson haute désigne les températures au-dessus de 160 °C (rissolage, friture, environ 160–200 °C et plus). La frontière entre les deux est fixée ici à 160 °C ; elle peut varier selon les sources.",
   },
   {
-    question: "Ce que mesure vraiment l'oxydation",
+    question: "Que mesure concrètement le critère de stabilité à l'oxydation ?",
     answer:
-      "L'oxydation des lipides altère leur qualité et peut générer des composés indésirables. La stabilité à l'oxydation reflète la résistance de la graisse à ce phénomène, surtout à la chaleur. C'est un critère central pour les usages cuisson.",
+      "L'oxydation des lipides est une dégradation chimique qui altère la qualité des graisses et peut générer des composés indésirables (rancissement, perte de nutriments). La chaleur et l'oxygène accélèrent ce phénomène. Le critère « stabilité à l'oxydation » reflète la résistance de la graisse à cette dégradation ; il s'appuie sur des indicateurs mesurables (par exemple un indice de type Rancimat). Plus une graisse est stable, moins elle se dégrade rapidement à la chaleur. C'est pourquoi ce critère est central pour les usages en cuisson : il permet de distinguer les graisses adaptées au chauffage de celles qui sont plus fragiles et à réserver de préférence à cru.",
   },
   {
     question: "Une huile stable est-elle forcément saine ?",
