@@ -8,3 +8,6 @@ build
 .env
 .env.*
 !.env.example
+
+# Vercel (lien local au projet, recréé par `vercel link`)
+.vercel
