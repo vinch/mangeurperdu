@@ -3,7 +3,7 @@
   let submitting = $state(false);
 
   const SUPABASE_SAVE_EMAIL_URL =
-    "https://apgydbcrmczqisjjgttx.supabase.co/functions/v1/save-email";
+    "https://apgydbcrmczqisjjgttx.supabase.co/functions/v1/save-email-mangeurperdu";
 
   async function handleSubmit() {
     submitting = true;
@@ -16,7 +16,7 @@
 
       if (response.ok) {
         alert(
-          "Merci pour votre intérêt ! Nous vous notifierons dès que le livre sera disponible."
+          "Merci pour votre intérêt ! Nous vous notifierons dès que le livre sera disponible.",
         );
         email = "";
       } else {
