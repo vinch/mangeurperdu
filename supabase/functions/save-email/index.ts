@@ -22,7 +22,7 @@ serve(async (req) => {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },
         },
-      }
+      },
     );
 
     // Get the request body
@@ -37,7 +37,7 @@ serve(async (req) => {
 
     // Insert only if not already present (client always sees success)
     const { data, error } = await supabaseClient
-      .from("email_subscriber")
+      .from("email_subscriber_mangeurperdu")
       .insert([{ email: normalizedEmail }]);
 
     if (error) {
