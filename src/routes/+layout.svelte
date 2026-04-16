@@ -1,7 +1,20 @@
+<script lang="ts">
+  import SiteHeader from "../lib/components/SiteHeader.svelte";
+  import SiteFooter from "../lib/components/SiteFooter.svelte";
+</script>
+
 <svelte:head>
   <!-- Meta par défaut (surchargées par les pages) -->
   <meta name="robots" content="index, follow" />
 </svelte:head>
+
+<div class="site-shell">
+  <SiteHeader variant="dark" />
+  <main class="site-main">
+    <slot />
+  </main>
+  <SiteFooter />
+</div>
 
 <style>
   :global(*) {
@@ -11,11 +24,147 @@
   }
 
   :global(body) {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #654074;
+    background-color: #fff;
     min-height: 100vh;
+  }
+
+  :global(:root) {
+    --mp-purple: #654074;
+    --mp-purple-900: #3a2442;
+    --mp-purple-hover: #52335d;
+    --mp-text: #2c3e50;
+    --mp-muted: #56616b;
+    --mp-surface: #ffffff;
+    --mp-surface-2: rgba(255, 255, 255, 0.9);
+    /* Aligné sur SiteHeader .inner / SiteFooter .footer-inner */
+    --mp-shell-max: 1100px;
+    /* Colonne de lecture : pages .page (À propos, Conférences) + ressources */
+    --mp-content-max: 52rem;
+    --mp-shell-pad-x: 1.25rem;
+    /* Boutons / CTA (pilule, même échelle partout) */
+    --mp-btn-radius: 999px;
+    --mp-btn-pad-y: 0.65rem;
+    --mp-btn-pad-x: 1.1rem;
+    --mp-btn-font-size: 0.95rem;
+    --mp-btn-font-weight: 700;
+    /* Liens texte dans le contenu */
+    --mp-link: var(--mp-purple);
+    --mp-link-hover: var(--mp-purple-hover);
+    --mp-link-underline: rgba(101, 64, 116, 0.38);
+  }
+
+  /* Liens “inline” : violet discret + soulignement (hors boutons / cartes / header) */
+  :global(
+    main.site-main
+      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
+        .primary
+      ):not(.place-link)
+  ) {
+    color: var(--mp-link);
+    text-decoration: underline;
+    text-decoration-color: var(--mp-link-underline);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    font-weight: 500;
+    transition:
+      color 0.15s ease,
+      text-decoration-color 0.15s ease;
+  }
+
+  :global(
+    main.site-main
+      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
+        .primary
+      ):not(.place-link):hover
+  ) {
+    color: var(--mp-link-hover);
+    text-decoration-color: var(--mp-link);
+  }
+
+  :global(
+    main.site-main
+      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
+        .primary
+      ):not(.place-link):visited
+  ) {
+    color: var(--mp-link);
+  }
+
+  /* Primaire : liens <a> et composants type EmailLink */
+  :global(a.cta),
+  :global(.cta) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: var(--mp-btn-font-weight);
+    font-size: var(--mp-btn-font-size);
+    line-height: 1.2;
+    color: #fff;
+    background: var(--mp-purple);
+    padding: var(--mp-btn-pad-y) var(--mp-btn-pad-x);
+    border-radius: var(--mp-btn-radius);
+    border: none;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  :global(a.cta:hover),
+  :global(.cta:hover) {
+    background: var(--mp-purple-hover);
+  }
+
+  /* Secondaire : contour (ex. « Infos / billets », lien ghost) */
+  :global(a.cta-secondary),
+  :global(.cta-secondary) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: var(--mp-btn-font-weight);
+    font-size: var(--mp-btn-font-size);
+    line-height: 1.2;
+    color: #5a4a63;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: var(--mp-btn-pad-y) var(--mp-btn-pad-x);
+    border-radius: var(--mp-btn-radius);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      color 0.15s ease;
+  }
+
+  :global(a.cta-secondary:hover),
+  :global(.cta-secondary:hover) {
+    border-color: rgba(101, 64, 116, 0.35);
+    background: rgba(101, 64, 116, 0.04);
+    color: var(--mp-purple);
+  }
+
+  :global(.site-shell) {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.site-main) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
   :global(.container) {
@@ -119,18 +268,26 @@
   }
 
   :global(button) {
-    background-color: #654074;
-    color: white;
+    font-family: inherit;
+    font-weight: var(--mp-btn-font-weight);
+    font-size: var(--mp-btn-font-size);
+    line-height: 1.2;
+    background-color: var(--mp-purple);
+    color: #fff;
     border: none;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 1rem;
+    padding: var(--mp-btn-pad-y) var(--mp-btn-pad-x);
+    border-radius: var(--mp-btn-radius);
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
   }
 
-  :global(button:hover) {
-    background-color: #52335d;
+  :global(button:hover:not(:disabled)) {
+    background-color: var(--mp-purple-hover);
+  }
+
+  :global(button:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 
   @media (max-width: 768px) {
@@ -151,24 +308,14 @@
     }
   }
 
-  /* Page générique (ex: /fat) */
+  /* Même largeur de contenu que les pages ressources (.resource-main) */
   :global(.page) {
-    min-height: 100vh;
     background: white;
-    padding: 4rem 2rem;
-    max-width: 800px;
+    padding: 4rem var(--mp-shell-pad-x);
+    max-width: var(--mp-content-max);
+    width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
   }
 
-  :global(.page a) {
-    color: #654074;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  :global(.page a:hover) {
-    text-decoration: underline;
-  }
 </style>
-
-<slot />

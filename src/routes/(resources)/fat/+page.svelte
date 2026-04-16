@@ -124,22 +124,14 @@
   />
 </svelte:head>
 
-<div class="fat-page">
-  <header class="fat-header">
-    <a href="/" class="back-link">← Retour à l'accueil</a>
-    <span class="fat-version" aria-label="Version et date"
-      >Version 1 / 16 février 2026</span
-    >
-  </header>
-
-  <main>
-    <!-- HERO -->
+<!-- HERO -->
     <section class="hero" aria-labelledby="hero-title">
       <h1 id="hero-title">Méthode de classement des huiles et graisses</h1>
       <p class="hero-subtitle">
         Scores, pondérations et détail des critères par usage (cru, cuisson
         douce, cuisson haute).
       </p>
+      <p class="hero-meta">Version 1 · 16 février 2026</p>
     </section>
 
     <!-- TABLE DES MATIÈRES -->
@@ -611,18 +603,6 @@
         </p>
       </div>
     </section>
-  </main>
-
-  <footer class="fat-footer">
-    <a
-      href="https://www.instagram.com/mangeurperdu/"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="fat-footer-link"
-    >
-      Suivez @mangeurperdu sur Instagram
-    </a>
-  </footer>
 
   {#if showBackToTop}
     <button
@@ -635,59 +615,21 @@
       <span aria-hidden="true">↑</span>
     </button>
   {/if}
-</div>
 
 <style>
-  .fat-page {
-    background: #fff;
-    color: #333;
-    min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-  }
-
-  .fat-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid #eee;
-  }
-
-  .fat-version {
-    font-size: 0.875rem;
-    color: #666;
-  }
-
-  .back-link {
-    color: #654074;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .back-link:hover {
-    text-decoration: underline;
-  }
-
-  main {
-    max-width: 52rem;
-    margin: 0 auto;
-    padding: 0 1.25rem 3rem;
-  }
-
   .hero {
-    padding: 2rem 0;
-  }
-  .hero h1 {
-    font-size: 1.75rem;
-    line-height: 1.3;
-    color: #1a1a1a;
-    margin-bottom: 0.75rem;
+    padding: 0 0 2rem;
   }
   .hero-subtitle {
     font-size: 1.1rem;
     color: #555;
     margin-bottom: 1rem;
+  }
+
+  .hero-meta {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0;
   }
   .toc {
     margin-bottom: 2rem;
@@ -959,27 +901,40 @@
     margin: 0 0 0.35rem;
     color: #222;
   }
-  .faq-question-btn {
+  /* Réinit explicite : le `button` global du site impose fond violet / texte blanc. */
+  button.faq-question-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
     width: 100%;
-    padding: 0;
+    padding: 0.45rem 0;
+    margin: 0;
     font: inherit;
+    font-size: inherit;
     font-weight: 600;
+    line-height: inherit;
     text-align: left;
-    color: inherit;
-    background: none;
+    color: #222;
+    background-color: transparent;
     border: none;
+    border-radius: 0;
     cursor: pointer;
+    box-shadow: none;
+    transition: color 0.15s ease;
   }
-  .faq-question-btn:hover {
+  button.faq-question-btn:hover:not(:disabled) {
     color: #654074;
+    background-color: transparent;
   }
-  .faq-item .expand-icon {
+  button.faq-question-btn:focus-visible {
+    outline: 2px solid #654074;
+    outline-offset: 2px;
+  }
+  .faq-item .expand-icon,
+  .criteria-doc-item .expand-icon {
     font-size: 1.1rem;
-    color: #654074;
+    color: currentColor;
     font-weight: bold;
     flex-shrink: 0;
   }
@@ -1040,25 +995,7 @@
     margin-bottom: 0;
   }
 
-  .fat-footer {
-    margin-top: 2.5rem;
-    padding: 1.5rem 1.25rem;
-    border-top: 1px solid #eee;
-    text-align: center;
-  }
-  .fat-footer-link {
-    color: #654074;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .fat-footer-link:hover {
-    text-decoration: underline;
-  }
-
   @media (min-width: 640px) {
-    .hero h1 {
-      font-size: 2rem;
-    }
     .toc-toggle {
       display: none;
     }
