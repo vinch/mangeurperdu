@@ -104,8 +104,8 @@ Merci !`;
       <h1>Conférences</h1>
       <p>
         Je donne des conférences pour expliquer les idées au cœur du livre
-        <em>Mangeur Perdu</em> et partager une lecture claire de notre rapport
-        moderne à l’alimentation.
+        <em>Mangeur Perdu</em> et partager une lecture claire de notre rapport moderne
+        à l’alimentation.
       </p>
 
       {#if data.loadError}
@@ -277,7 +277,7 @@ Merci !`;
 
   .organizer-cta h2 {
     margin: 0 0 0.5rem;
-    font-size: 1.05rem;
+    font-size: 1.5rem;
     color: #2c3e50;
   }
 
@@ -316,6 +316,7 @@ Merci !`;
   }
 
   h2 {
+    font-size: 2rem;
     margin-top: 2.25rem;
     margin-bottom: 0.75rem;
     color: #2c3e50;

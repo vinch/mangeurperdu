@@ -88,11 +88,11 @@
 
   /* Liens “inline” : violet discret + soulignement (hors boutons / cartes / header) */
   :global(
-    main.site-main
-      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
-        .primary
-      ):not(.place-link)
-  ) {
+      main.site-main
+        a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
+          .back-link
+        ):not(.primary):not(.place-link)
+    ) {
     color: var(--mp-link);
     text-decoration: underline;
     text-decoration-color: var(--mp-link-underline);
@@ -105,21 +105,21 @@
   }
 
   :global(
-    main.site-main
-      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
-        .primary
-      ):not(.place-link):hover
-  ) {
+      main.site-main
+        a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
+          .back-link
+        ):not(.primary):not(.place-link):hover
+    ) {
     color: var(--mp-link-hover);
     text-decoration-color: var(--mp-link);
   }
 
   :global(
-    main.site-main
-      a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(.back-link):not(
-        .primary
-      ):not(.place-link):visited
-  ) {
+      main.site-main
+        a:not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
+          .back-link
+        ):not(.primary):not(.place-link):visited
+    ) {
     color: var(--mp-link);
   }
 
@@ -217,7 +217,7 @@
 
   :global(h1) {
     font-family: var(--mp-font-serif);
-    font-size: 2.5rem;
+    font-size: 3rem;
     line-height: var(--mp-leading-title);
     margin-bottom: 1.5rem;
     color: var(--mp-text);
@@ -364,5 +364,4 @@
   :global(.mp-stack > * + *) {
     margin-top: var(--mp-space-3);
   }
-
 </style>

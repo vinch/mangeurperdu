@@ -110,7 +110,7 @@
   }
 
   .error-card-404 .error-code {
-    font-size: 2.5rem;
+    font-size: 3rem;
     opacity: 0.92;
   }
 

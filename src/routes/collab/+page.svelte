@@ -119,8 +119,8 @@
   <section class="collab-cta" aria-labelledby="collab-cta-title">
     <h2 id="collab-cta-title">Proposer une collaboration</h2>
     <p class="collab-cta-text">
-      Si tu penses qu’un produit coche ces critères, envoie-moi un message avec
-      les infos essentielles.
+      Si tu penses que ton produit coche ces critères, envoie-moi un message et
+      on discute.
     </p>
     <EmailLink
       className="cta"
@@ -128,7 +128,7 @@
       body={collabBody}
       ariaLabel="Proposer une collaboration par email"
     >
-      Proposer une collaboration →
+      Let's go →
     </EmailLink>
   </section>
 </div>
@@ -207,7 +207,7 @@
 
   .collab-cta h2 {
     margin: 0 0 0.5rem;
-    font-size: 1.05rem;
+    font-size: 1.5rem;
     color: var(--mp-text);
   }
 
