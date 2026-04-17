@@ -288,6 +288,7 @@
   .section h2 {
     color: #2c3e50;
     font-size: 1.9rem;
+    line-height: 1.4em;
     margin-bottom: 0.75rem;
   }
 

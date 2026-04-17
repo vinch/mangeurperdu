@@ -1,8 +1,26 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
   import EmailLink from "$lib/components/EmailLink.svelte";
 
-  let { data }: { data: PageData } = $props();
+  type ConferenceItem = {
+    id: string;
+    starts_at: string;
+    ends_at: string | null;
+    venue: string;
+    address: string | null;
+    paf: string | null;
+    country: string | null;
+    status: string;
+    ticket_url: string | null;
+    rsvp_url: string | null;
+  };
+
+  type ConferencesPageData = {
+    future: ConferenceItem[];
+    past: ConferenceItem[];
+    loadError: string | null;
+  };
+
+  let { data }: { data: ConferencesPageData } = $props();
 
   const bookingSubject =
     "Demande d’intervention (organisateur) — Mangeur Perdu";
@@ -80,7 +98,7 @@ Merci !`;
   />
 </svelte:head>
 
-<div class="page conferences">
+<div class="page conferences mp-prose">
   <header class="page-header">
     <div class="header-copy">
       <h1>Conférences</h1>

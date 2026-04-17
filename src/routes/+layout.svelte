@@ -17,6 +17,8 @@
 </div>
 
 <style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..800&family=Inter:wght@400..800&display=swap");
+
   :global(*) {
     margin: 0;
     padding: 0;
@@ -24,22 +26,49 @@
   }
 
   :global(body) {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
-    color: #333;
+    font-family: var(--mp-font-sans);
+    line-height: var(--mp-leading-body);
+    color: var(--mp-text);
     background-color: #fff;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   :global(:root) {
+    --mp-font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial,
+      sans-serif;
+    --mp-font-serif: Fraunces, ui-serif, "Iowan Old Style", "Palatino Linotype",
+      Palatino, Georgia, serif;
+    --mp-leading-body: 1.62;
+    --mp-leading-title: 1.08;
+
     --mp-purple: #654074;
     --mp-purple-900: #3a2442;
     --mp-purple-hover: #52335d;
-    --mp-text: #2c3e50;
-    --mp-muted: #56616b;
+    --mp-text: #1f2d3a;
+    --mp-muted: rgba(31, 45, 58, 0.72);
+    --mp-paper: #ffffff;
     --mp-surface: #ffffff;
-    --mp-surface-2: rgba(255, 255, 255, 0.9);
+    --mp-surface-2: rgba(255, 255, 255, 0.92);
+    --mp-border: rgba(17, 24, 39, 0.12);
+
+    --mp-radius-sm: 10px;
+    --mp-radius-md: 14px;
+    --mp-radius-lg: 18px;
+
+    --mp-shadow-sm: 0 10px 28px rgba(17, 24, 39, 0.06);
+    --mp-shadow-md: 0 18px 60px rgba(17, 24, 39, 0.12);
+    --mp-shadow-lg: 0 30px 110px rgba(17, 24, 39, 0.22);
+
+    --mp-space-1: 0.5rem;
+    --mp-space-2: 0.75rem;
+    --mp-space-3: 1rem;
+    --mp-space-4: 1.5rem;
+    --mp-space-5: 2.25rem;
+
     /* Aligné sur SiteHeader .inner / SiteFooter .footer-inner */
     --mp-shell-max: 1100px;
     /* Colonne de lecture : pages .page (À propos, Conférences) + ressources */
@@ -121,6 +150,7 @@
   :global(a.cta:hover),
   :global(.cta:hover) {
     background: var(--mp-purple-hover);
+    box-shadow: var(--mp-shadow-sm);
   }
 
   /* Secondaire : contour (ex. « Infos / billets », lien ghost) */
@@ -152,6 +182,7 @@
     border-color: rgba(101, 64, 116, 0.35);
     background: rgba(101, 64, 116, 0.04);
     color: var(--mp-purple);
+    box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
   }
 
   :global(.site-shell) {
@@ -185,15 +216,26 @@
   }
 
   :global(h1) {
+    font-family: var(--mp-font-serif);
     font-size: 2.5rem;
-    line-height: 1em;
+    line-height: var(--mp-leading-title);
     margin-bottom: 1.5rem;
-    color: #2c3e50;
+    color: var(--mp-text);
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
+  }
+
+  :global(h2),
+  :global(h3) {
+    font-family: var(--mp-font-serif);
+    color: var(--mp-text);
+    letter-spacing: -0.015em;
+    font-optical-sizing: auto;
   }
 
   :global(p) {
-    margin-bottom: 2rem;
-    color: #666;
+    margin-bottom: 1.35rem;
+    color: var(--mp-muted);
   }
 
   :global(.signup-form) {
@@ -302,6 +344,25 @@
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
+  }
+
+  :global(.mp-section) {
+    padding: 4rem var(--mp-shell-pad-x);
+  }
+
+  :global(.mp-card) {
+    border: 1px solid var(--mp-border);
+    border-radius: var(--mp-radius-md);
+    background: var(--mp-surface);
+    box-shadow: var(--mp-shadow-sm);
+  }
+
+  :global(.mp-prose) {
+    max-width: 75ch;
+  }
+
+  :global(.mp-stack > * + *) {
+    margin-top: var(--mp-space-3);
   }
 
 </style>

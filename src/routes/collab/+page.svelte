@@ -346,8 +346,8 @@
 
   .modal-title {
     margin: 0;
-    font-size: 1.35rem;
-    line-height: 1.2;
+    font-size: 2rem;
+    line-height: 1.15;
     letter-spacing: -0.01em;
     color: var(--mp-text);
     font-weight: 850;

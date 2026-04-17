@@ -12,7 +12,7 @@
   />
 </svelte:head>
 
-<div class="page about">
+<div class="page about mp-prose">
   <h1>À propos</h1>
 
   <section class="about-panel" aria-label="Présentation">

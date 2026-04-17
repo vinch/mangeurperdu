@@ -1,20 +1,19 @@
 <div class="resource-surface">
-  <main class="resource-main">
+  <main class="resource-main mp-prose">
     <slot />
   </main>
 </div>
 
 <style>
-  /* Même socle que l’ancienne page graisses (`.fat-page` + `main`) */
+  /* Harmonisé avec les autres pages : fond "papier" autour, contenu blanc centré. */
   .resource-surface {
     background: #fff;
-    color: #333;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
+    color: var(--mp-text);
+    padding: 0;
   }
 
   .resource-main {
+    background: #fff;
     max-width: var(--mp-content-max, 52rem);
     margin: 0 auto;
     /* Même écart sous le header que `.page` (ex. À propos) : padding-top 4rem */
