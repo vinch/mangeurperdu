@@ -6,7 +6,7 @@
   />
 </svelte:head>
 
-<div>
+<div class="resources">
   <h1>Ressources</h1>
 
   <ul class="list">

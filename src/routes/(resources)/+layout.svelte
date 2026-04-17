@@ -14,7 +14,8 @@
 
   .resource-main {
     background: #fff;
-    max-width: var(--mp-content-max, 52rem);
+    /* Même colonne de lecture que les pages `.page mp-prose` (À propos, Conférences). */
+    max-width: 75ch;
     margin: 0 auto;
     /* Même écart sous le header que `.page` (ex. À propos) : padding-top 4rem */
     padding: 4rem var(--mp-shell-pad-x, 1.25rem) 3rem;
