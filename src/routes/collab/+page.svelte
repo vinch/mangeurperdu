@@ -65,13 +65,16 @@
     </p>
     <p>
       Le fil conducteur : proposer une alternative solide dans une catégorie
-      dominée par l’ultra-transformé toxique, avec une composition saine et des
+      dominée par l’ultra-transformé, avec une composition saine et des
       ingrédients aussi simples que possible (NOVA 3 au maximum).
     </p>
     <p>
-      Mon idéal reste une alimentation brute, ou au moins peu transformée —
-      celle de nos ancêtres. Ces produits sont un compromis utile : de très bons
-      choix pour la vie moderne, quand le “parfait” n’est pas l’option du jour.
+      Mon idéal reste une alimentation brute ou peu transformée, proche de celle
+      de nos ancêtres. Mais il ne s’agit pas de viser une perfection absolue.
+      L’important, c’est d’avancer dans la bonne direction, de faire mieux
+      qu’hier. Dans ce contexte, les produits présentés ici constituent un
+      compromis plus que pertinent par rapport aux contraintes de la vie
+      moderne.
     </p>
   </FeaturedSelectionIntro>
 
