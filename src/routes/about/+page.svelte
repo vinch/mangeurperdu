@@ -36,8 +36,8 @@
             target="_blank"
             rel="noopener noreferrer">Rebel Food</a
           >
-          . Il s’intéresse depuis plus de dix ans aux questions de nutrition et
-          de santé. À travers
+          . Il s’intéresse depuis plus de dix ans aux questions de nutrition et de
+          santé. À travers
           <a
             href="https://www.instagram.com/mangeurperdu/"
             target="_blank"
@@ -51,7 +51,7 @@
             subject={contactSubject}
             ariaLabel="Contacter Vincent Battaglia par email"
           >
-            Prendre contact
+            Prendre contact →
           </EmailLink>
         </div>
       </div>

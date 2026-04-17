@@ -97,7 +97,7 @@
               disabled={submitting}
               aria-label="Adresse email"
             />
-            <button type="submit" disabled={submitting}>Me notifier</button>
+            <button type="submit" class="cta" disabled={submitting}>Me notifier</button>
           </form>
           {#if submitting}
             <p class="subtle">Envoi en cours…</p>

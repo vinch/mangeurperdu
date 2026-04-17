@@ -267,25 +267,11 @@
     border-color: #654074;
   }
 
-  :global(button) {
-    font-family: inherit;
-    font-weight: var(--mp-btn-font-weight);
-    font-size: var(--mp-btn-font-size);
-    line-height: 1.2;
-    background-color: var(--mp-purple);
-    color: #fff;
-    border: none;
-    padding: var(--mp-btn-pad-y) var(--mp-btn-pad-x);
-    border-radius: var(--mp-btn-radius);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  :global(button:hover:not(:disabled)) {
-    background-color: var(--mp-purple-hover);
-  }
-
-  :global(button:disabled) {
+  /* NOTE: Ne pas styliser tous les <button> globalement.
+     Sinon ça “pollue” des boutons utilitaires (tuiles, modales, toggles, etc.).
+     Les styles CTA sont portés par `.cta` / `.cta-secondary` (déjà définis plus haut). */
+  :global(button.cta:disabled),
+  :global(button.cta-secondary:disabled) {
     opacity: 0.55;
     cursor: not-allowed;
   }
