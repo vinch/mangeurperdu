@@ -4,6 +4,7 @@
   let { variant = "dark" }: { variant?: "light" | "dark" } = $props();
 
   let scrolled = $state(false);
+  let mobileOpen = $state(false);
 
   const navItems = [
     { href: "/", label: "Livre" },
@@ -36,6 +37,23 @@
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   });
+
+  // Ferme le menu mobile lors de la navigation.
+  $effect(() => {
+    page.url.pathname;
+    mobileOpen = false;
+  });
+
+  $effect(() => {
+    if (typeof window === "undefined") return;
+    if (!mobileOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") mobileOpen = false;
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
 </script>
 
 <header class="site-header" data-variant={variant} data-scrolled={scrolled}>
@@ -44,7 +62,7 @@
       <img src="/logo.jpg" alt="Mangeur Perdu" />
     </a>
 
-    <nav class="nav" aria-label="Navigation principale">
+    <nav class="nav nav-desktop" aria-label="Navigation principale">
       {#each navItems as { href, label } (href)}
         {@const active = isNavActive(href, page.url.pathname)}
         <a
@@ -54,7 +72,49 @@
         >
       {/each}
     </nav>
+
+    <button
+      type="button"
+      class="menu-btn"
+      aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+      aria-expanded={mobileOpen}
+      aria-controls="mobile-nav"
+      onclick={() => (mobileOpen = !mobileOpen)}
+    >
+      <span class="menu-icon" aria-hidden="true">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+    </button>
   </div>
+
+  {#if mobileOpen}
+    <button
+      type="button"
+      class="menu-backdrop"
+      aria-label="Fermer le menu"
+      onclick={() => (mobileOpen = false)}
+    ></button>
+  {/if}
+
+  <nav
+    id="mobile-nav"
+    class="nav nav-mobile"
+    aria-label="Navigation principale (mobile)"
+    data-open={mobileOpen}
+  >
+    {#each navItems as { href, label } (href)}
+      {@const active = isNavActive(href, page.url.pathname)}
+      <a
+        {href}
+        class:is-active={active}
+        aria-current={active ? "page" : undefined}
+        onclick={() => (mobileOpen = false)}
+        >{label}</a
+      >
+    {/each}
+  </nav>
 </header>
 
 <style>
@@ -117,6 +177,85 @@
     flex-wrap: wrap;
   }
 
+  .menu-btn {
+    margin-left: auto;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .menu-btn:focus-visible {
+    outline: 2px solid var(--mp-purple);
+    outline-offset: 2px;
+  }
+
+  .menu-icon {
+    display: grid;
+    gap: 4px;
+  }
+
+  .menu-icon .bar {
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: #fff;
+    opacity: 0.95;
+  }
+
+  .menu-backdrop {
+    position: fixed;
+    inset: var(--header-height) 0 0 0;
+    background: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(2px);
+    z-index: 60;
+  }
+
+  .nav-mobile {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    padding: 0.75rem var(--mp-shell-pad-x, 1.25rem) 1rem;
+    margin: 0;
+    display: grid;
+    gap: 0.25rem;
+    background: inherit;
+    border-bottom: inherit;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 160ms ease,
+      opacity 160ms ease;
+    z-index: 70;
+  }
+
+  .nav-mobile[data-open="true"] {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-mobile a {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid transparent;
+  }
+
+  .site-header[data-variant="dark"] .nav-mobile a {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .site-header[data-variant="light"] .nav-mobile a {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+
   .nav a {
     text-decoration: none;
     font-weight: 550;
@@ -155,11 +294,15 @@
 
   @media (max-width: 820px) {
     .inner {
-      justify-content: center;
+      justify-content: space-between;
+      padding-left: 0;
+      padding-right: 0;
     }
-    .nav {
-      margin-left: 0;
-      justify-content: center;
+    .nav-desktop {
+      display: none;
+    }
+    .menu-btn {
+      display: inline-flex;
     }
   }
 </style>
