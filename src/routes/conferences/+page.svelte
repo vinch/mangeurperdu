@@ -260,10 +260,6 @@ Merci !`;
     margin-bottom: 2.25rem;
   }
 
-  .header-copy h1 {
-    margin-bottom: 0.6rem;
-  }
-
   .organizer-cta {
     width: 100%;
     max-width: min(32rem, 100%);
