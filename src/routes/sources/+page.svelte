@@ -6,6 +6,7 @@
     title: string;
     url: string;
     published_at: string | null;
+    source_name: string | null;
   };
 
   type SourcesPageData = {
@@ -15,15 +16,12 @@
 
   let { data }: { data: SourcesPageData } = $props();
 
-  function fmtPublished(iso: string) {
+  function fmtDate(iso: string) {
     const d = new Date(iso);
-    return d.toLocaleString("fr-FR", {
+    return d.toLocaleDateString("fr-FR", {
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZoneName: "short",
     });
   }
 </script>
@@ -58,13 +56,27 @@
     <ul class="list">
       {#each data.items as item (item.id)}
         <li>
-          <a class="row" href={item.url} target="_blank" rel="noopener noreferrer">
+          <a
+            class="row"
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <span class="label">{item.title}</span>
-            {#if item.published_at}
-              <span class="meta">{fmtPublished(item.published_at)}</span>
-            {:else}
-              <span class="meta">{fmtPublished(item.created_at)}</span>
-            {/if}
+            <span class="meta">
+              {#if item.published_at}
+                {#if item.source_name}
+                  <strong class="source-name">{item.source_name}</strong><span
+                    class="sep"
+                    aria-hidden="true">·</span
+                  >
+                {/if}Publié le {fmtDate(item.published_at)}
+              {:else if item.source_name}
+                <strong class="source-name">{item.source_name}</strong>
+              {:else}
+                Source
+              {/if}
+            </span>
             <span class="arrow" aria-hidden="true">→</span>
           </a>
         </li>
@@ -88,6 +100,15 @@
 
   .empty {
     color: #56616b;
+  }
+
+  .source-name {
+    font-weight: 750;
+  }
+
+  .sep {
+    margin: 0 0.5ch;
+    opacity: 0.85;
   }
 
   .list {
