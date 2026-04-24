@@ -5,7 +5,7 @@
     updated_at: string;
     title: string;
     url: string;
-    published_at: string;
+    published_at: string | null;
   };
 
   type SourcesPageData = {
@@ -60,7 +60,11 @@
         <li>
           <a class="row" href={item.url} target="_blank" rel="noopener noreferrer">
             <span class="label">{item.title}</span>
-            <span class="meta">{fmtPublished(item.published_at)}</span>
+            {#if item.published_at}
+              <span class="meta">{fmtPublished(item.published_at)}</span>
+            {:else}
+              <span class="meta">{fmtPublished(item.created_at)}</span>
+            {/if}
             <span class="arrow" aria-hidden="true">→</span>
           </a>
         </li>
