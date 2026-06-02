@@ -11,3 +11,6 @@ build
 
 # Vercel (lien local au projet, recréé par `vercel link`)
 .vercel
+
+# Temp files
+.tmp

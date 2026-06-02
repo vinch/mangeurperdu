@@ -53,7 +53,7 @@
   <div class="actions" aria-label="Liens externes">
     {#if websiteUrl}
       <a
-        class="cta-secondary"
+        class="btn-light-sm btn-external"
         href={websiteUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -62,7 +62,7 @@
     {/if}
     {#if reelUrl}
       <a
-        class="cta-secondary"
+        class="btn-light-sm btn-external"
         href={reelUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -154,8 +154,4 @@
     align-items: center;
   }
 
-  .actions :global(.cta-secondary) {
-    padding: 0.55rem 0.9rem;
-    font-size: 0.92rem;
-  }
 </style>
