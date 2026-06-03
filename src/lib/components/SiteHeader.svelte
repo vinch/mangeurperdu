@@ -274,6 +274,21 @@
   }
 
   @media (max-width: 820px) {
+    .site-header,
+    .site-header[data-scrolled="true"] {
+      --header-height: 72px;
+      background: #fff;
+      transition: border-color 0.2s ease;
+    }
+
+    .site-header {
+      border-bottom-color: transparent;
+    }
+
+    .site-header[data-scrolled="true"] {
+      border-bottom-color: rgba(17, 24, 39, 0.08);
+    }
+
     .brand-name {
       display: none;
     }

@@ -270,6 +270,12 @@
     text-decoration: underline;
   }
 
+  @media (max-width: 820px) {
+    .book-page {
+      --header-h: 72px;
+    }
+  }
+
   @media (max-width: 960px) {
     .book-hero-inner {
       grid-template-columns: 1fr;

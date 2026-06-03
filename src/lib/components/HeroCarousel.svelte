@@ -60,6 +60,11 @@
 
   const count = $derived(slides.length);
   const LOOP_TRANSITION_MS = 520;
+  const SWIPE_THRESHOLD_PX = 50;
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchTracking = false;
 
   /** Trois copies pour boucler sans sauter d’un clone extrême. */
   function buildLoopSlides(items: HeroSlide[]): HeroSlide[] {
@@ -248,6 +253,35 @@
     trackOffset = computeTrackOffset(trackIndex);
   }
 
+  function onTouchStart(e: TouchEvent) {
+    if (count <= 1 || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+    touchTracking = true;
+    paused = true;
+  }
+
+  function onTouchEnd(e: TouchEvent) {
+    if (!touchTracking) return;
+    touchTracking = false;
+    paused = false;
+    if (count <= 1 || isLoopSnapping || isAnimating) return;
+    const t = e.changedTouches[0];
+    if (!t) return;
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return;
+    if (Math.abs(dy) >= Math.abs(dx)) return;
+    if (dx < 0) next();
+    else prev();
+  }
+
+  function onTouchCancel() {
+    touchTracking = false;
+    paused = false;
+  }
+
   $effect(() => {
     const viewport = viewportEl;
     const track = trackEl;
@@ -318,7 +352,13 @@
     onmouseenter={() => (paused = true)}
     onmouseleave={() => (paused = false)}
   >
-    <div class="carousel-viewport" bind:this={viewportEl}>
+    <div
+      class="carousel-viewport"
+      bind:this={viewportEl}
+      ontouchstart={onTouchStart}
+      ontouchend={onTouchEnd}
+      ontouchcancel={onTouchCancel}
+    >
       <div
         class="carousel-track"
         class:is-ready={trackLayoutReady}
@@ -797,6 +837,10 @@
   }
 
   @media (max-width: 900px) {
+    .carousel-viewport {
+      touch-action: pan-y;
+    }
+
     .carousel-track {
       align-items: flex-start;
     }

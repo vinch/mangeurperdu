@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>Qui je suis — Mangeur Perdu</title>
+  <title>À propos — Mangeur Perdu</title>
   <meta
     name="description"
     content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu, cofondateur de Rebel Food."
@@ -16,7 +16,7 @@
   <section class="about-hero" aria-label="Présentation">
     <div class="about-hero-visual" aria-hidden="true"></div>
     <div class="about-hero-copy">
-      <h1>Qui je suis</h1>
+      <h1>À propos</h1>
       <p class="lead">
         Vincent Battaglia est informaticien de formation, entrepreneur dans la
         tech et cofondateur de
