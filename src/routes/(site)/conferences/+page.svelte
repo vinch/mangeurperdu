@@ -75,6 +75,19 @@ Merci !`;
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   }
 
+  /** Rue et localité (séparateur « · » en base, ex. « Rue X 7 · 7090 Ville »). */
+  function parseAddress(address: string): { street: string; locality: string } {
+    const raw = address.trim();
+    const parts = raw
+      .split(/\s*·\s*/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (parts.length >= 2) {
+      return { street: parts[0], locality: parts.slice(1).join(" · ") };
+    }
+    return { street: raw, locality: "" };
+  }
+
   /** Affiche le PAF avec « EUR » après le montant (évite doublon si déjà € / EUR en base). */
   function formatPaf(paf: string | null | undefined): string {
     const raw = (paf ?? "").trim();
@@ -138,19 +151,42 @@ Merci !`;
                   <p class="date">{fmt(item.starts_at)}</p>
                   <p class="venue-name">{item.venue}</p>
                   {#if item.address || item.country}
+                    {@const addr = item.address
+                      ? parseAddress(item.address)
+                      : null}
                     <p class="place">
-                      {#if item.address}
+                      {#if addr}
                         <a
                           class="place-link"
                           href={googleMapsUrl(item)}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="Ouvrir l’adresse dans Google Maps"
-                          >{item.address}</a
                         >
-                      {/if}
-                      {#if countryEmoji(item.country)}
-                        {item.address ? " " : ""}<span
+                          <span class="place-line">{addr.street}</span>
+                          {#if addr.locality}
+                            <span class="place-line">
+                              {addr.locality}
+                              {#if countryEmoji(item.country)}
+                                <span
+                                  class="country-flag"
+                                  title={countryTitle(item.country)}
+                                  >{countryEmoji(item.country)}</span
+                                >
+                              {/if}
+                            </span>
+                          {:else if countryEmoji(item.country)}
+                            <span class="place-line">
+                              <span
+                                class="country-flag"
+                                title={countryTitle(item.country)}
+                                >{countryEmoji(item.country)}</span
+                              >
+                            </span>
+                          {/if}
+                        </a>
+                      {:else if countryEmoji(item.country)}
+                        <span
                           class="country-flag"
                           title={countryTitle(item.country)}
                           >{countryEmoji(item.country)}</span
@@ -206,19 +242,42 @@ Merci !`;
                   <p class="date">{fmt(item.starts_at)}</p>
                   <p class="venue-name">{item.venue}</p>
                   {#if item.address || item.country}
+                    {@const addr = item.address
+                      ? parseAddress(item.address)
+                      : null}
                     <p class="place">
-                      {#if item.address}
+                      {#if addr}
                         <a
                           class="place-link"
                           href={googleMapsUrl(item)}
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label="Ouvrir l’adresse dans Google Maps"
-                          >{item.address}</a
                         >
-                      {/if}
-                      {#if countryEmoji(item.country)}
-                        {item.address ? " " : ""}<span
+                          <span class="place-line">{addr.street}</span>
+                          {#if addr.locality}
+                            <span class="place-line">
+                              {addr.locality}
+                              {#if countryEmoji(item.country)}
+                                <span
+                                  class="country-flag"
+                                  title={countryTitle(item.country)}
+                                  >{countryEmoji(item.country)}</span
+                                >
+                              {/if}
+                            </span>
+                          {:else if countryEmoji(item.country)}
+                            <span class="place-line">
+                              <span
+                                class="country-flag"
+                                title={countryTitle(item.country)}
+                                >{countryEmoji(item.country)}</span
+                              >
+                            </span>
+                          {/if}
+                        </a>
+                      {:else if countryEmoji(item.country)}
+                        <span
                           class="country-flag"
                           title={countryTitle(item.country)}
                           >{countryEmoji(item.country)}</span
@@ -386,6 +445,11 @@ Merci !`;
     background: #f4f6f8;
   }
 
+  .meta {
+    min-width: 0;
+    flex: 1;
+  }
+
   .date {
     margin: 0 0 0.35rem;
     font-size: clamp(1.05rem, 2.5vw, 1.28rem);
@@ -393,6 +457,7 @@ Merci !`;
     line-height: 1.25;
     letter-spacing: -0.02em;
     color: #1f2d3a;
+    white-space: nowrap;
   }
 
   .venue-name {
@@ -409,9 +474,18 @@ Merci !`;
   }
 
   .place-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
     color: inherit;
     font: inherit;
     text-decoration: none;
+  }
+
+  .place-line {
+    display: block;
+    line-height: 1.35;
   }
 
   .place-link:hover {
@@ -501,6 +575,19 @@ Merci !`;
 
     .conf-hero-copy {
       padding: 1.5rem 1.5rem 1.75rem;
+    }
+
+    .item {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .item-actions {
+      justify-content: flex-start;
+    }
+
+    .date {
+      font-size: clamp(0.95rem, 3.8vw, 1.15rem);
     }
   }
 </style>

@@ -134,5 +134,16 @@
       flex-direction: column;
       align-items: flex-start;
     }
+
+    .footer-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .footer-nav {
+      padding-left: 0;
+      border-left: none;
+    }
   }
 </style>

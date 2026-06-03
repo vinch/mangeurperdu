@@ -797,74 +797,133 @@
   }
 
   @media (max-width: 900px) {
-    .slide {
-      --slide-height: auto;
+    .carousel-track {
+      align-items: flex-start;
     }
 
+    /*
+     * Gabarit mobile commun : bandeau visuel à hauteur fixe identique sur les 3 slides,
+     * texte + bouton en dessous ; la carte épouse le contenu (pas de min-height imposée).
+     */
+    .slide,
     .slide:not(.slide-photo-hero) {
-      grid-template-columns: 1fr;
+      --slide-height: auto;
+      --slide-mobile-visual-h: 13rem;
+      display: flex;
+      flex-direction: column;
+      grid-template-columns: unset;
+      grid-template-rows: unset;
+      gap: 0;
       height: auto;
       min-height: 0;
-      padding: 1.75rem 1.5rem 1.5rem;
-    }
-
-    .slide:not(.slide-photo-hero) .slide-visual {
-      order: -1;
-      height: auto;
-      min-height: 12rem;
+      padding: 0;
+      overflow: hidden;
     }
 
     .slide[data-theme="purple"]:not(.slide-photo-hero) {
-      grid-template-columns: 1fr;
+      padding: 0;
       gap: 0;
-      padding: 1.75rem 1.5rem 1.5rem;
     }
 
-    .slide:not(.slide-photo-hero)[data-theme="purple"] .slide-visual {
+    /* Le markup met souvent le texte avant l’image : forcer visuel en haut. */
+    .slide .slide-visual {
+      order: -1;
+      flex: 0 0 var(--slide-mobile-visual-h);
+      width: 100%;
+      height: var(--slide-mobile-visual-h);
+      min-height: var(--slide-mobile-visual-h);
+      max-height: var(--slide-mobile-visual-h);
       margin: 0;
-      height: auto;
-      min-height: 12rem;
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      align-items: flex-end;
       justify-content: center;
-      overflow: visible;
+      overflow: hidden;
     }
 
-    .slide:not(.slide-photo-hero)[data-theme="purple"] .slide-visual img {
-      height: auto;
-      max-width: min(85vw, 320px);
-      max-height: 16rem;
-      object-position: center;
-    }
-
-    .slide:not(.slide-photo-hero) .slide-visual img {
-      max-width: min(72vw, 280px);
-      max-height: 14rem;
-      height: auto;
-    }
-
-    .slide:not(.slide-photo-hero)[data-theme="warm"] .slide-visual img {
-      max-width: min(85vw, 280px);
-      max-height: 18rem;
+    .slide:not(.slide-photo-hero) .slide-visual {
+      padding: 1.15rem 1.25rem 0.4rem;
+      align-items: flex-end;
     }
 
     .slide-photo-hero .slide-visual {
       position: relative;
+      inset: auto;
+      padding: 0;
+      align-items: stretch;
+    }
+
+    .slide:not(.slide-photo-hero) .slide-visual img,
+    .slide:not(.slide-photo-hero)[data-theme="warm"] .slide-visual img,
+    .slide:not(.slide-photo-hero)[data-theme="purple"] .slide-visual img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center bottom;
+    }
+
+    .slide:not(.slide-photo-hero)[data-theme="purple"] .slide-visual {
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .slide-photo-hero .slide-visual img {
       width: 100%;
-      height: 14rem;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      object-fit: cover;
+      object-position: center;
     }
 
     .slide-photo-hero .slide-scrim {
-      background: linear-gradient(
-        180deg,
-        transparent 0%,
-        color-mix(in srgb, var(--slide-fade) 40%, transparent) 55%,
-        var(--slide-fade) 100%
-      );
+      display: none;
+    }
+
+    .slide .slide-copy {
+      order: 0;
+      flex: 0 1 auto;
+      min-height: 0;
+      max-width: none;
+      justify-content: flex-start;
+      padding: 0.85rem 1.35rem 1.35rem;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .slide-photo-hero .slide-copy {
-      max-width: none;
+      position: relative;
+      z-index: 2;
       min-height: 0;
-      padding: 1.25rem 1.5rem 1.75rem;
+      padding: 1.15rem 1.35rem 1.35rem;
+    }
+
+    .slide-title {
+      font-size: clamp(1.65rem, 6.5vw, 2.15rem);
+    }
+
+    .slide-subtitle {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .slide-body {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+    }
+
+    .slide .slide-actions {
+      margin-top: 0;
+      flex-shrink: 0;
+      padding-top: 1rem;
     }
   }
 

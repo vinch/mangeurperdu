@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>À propos — Mangeur Perdu</title>
+  <title>Qui je suis — Mangeur Perdu</title>
   <meta
     name="description"
     content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu, cofondateur de Rebel Food."
@@ -14,8 +14,9 @@
 
 <div class="about-page">
   <section class="about-hero" aria-label="Présentation">
+    <div class="about-hero-visual" aria-hidden="true"></div>
     <div class="about-hero-copy">
-      <h1>À propos</h1>
+      <h1>Qui je suis</h1>
       <p class="lead">
         Vincent Battaglia est informaticien de formation, entrepreneur dans la
         tech et cofondateur de
@@ -64,7 +65,15 @@
     border-radius: 1.35rem;
     overflow: hidden;
     background-color: #e9be60;
-    /* Jamais rognée, toujours calée en bas à gauche. */
+  }
+
+  /* Photo limitée à la colonne gauche : proportionnelle à la largeur, jamais rognée. */
+  .about-hero-visual {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: stretch;
+    min-width: 0;
+    min-height: 0;
     background-image: url("/vinch-transparent.png");
     background-repeat: no-repeat;
     background-position: left bottom;
@@ -73,10 +82,13 @@
 
   .about-hero-copy {
     grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2.75rem 3rem;
+    padding: 2.75rem 3rem 2.75rem 0;
     color: #1f2d3a;
   }
 
@@ -106,15 +118,39 @@
 
   @media (max-width: 720px) {
     .about-hero {
+      position: relative;
       grid-template-columns: 1fr;
       min-height: 0;
-      background-size: auto 13rem;
+    }
+
+    .about-hero-visual {
+      grid-column: 1;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 13rem;
+      pointer-events: none;
     }
 
     .about-hero-copy {
       grid-column: 1;
       justify-content: flex-start;
       padding: 1.75rem 1.5rem 14rem;
+    }
+
+    .lead {
+      margin-bottom: 0;
+    }
+
+    /* À côté du portrait (fond), dans la zone jaune libre */
+    .actions {
+      position: absolute;
+      left: clamp(10.5rem, 34vw, 12.5rem);
+      right: 1.5rem;
+      bottom: 6.75rem;
+      z-index: 1;
+      justify-content: flex-end;
     }
   }
 </style>

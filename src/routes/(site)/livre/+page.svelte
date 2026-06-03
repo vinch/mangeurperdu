@@ -110,13 +110,13 @@
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
     align-items: stretch;
-    min-height: min(48vh, 28rem);
   }
 
   .book-hero-copy {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-self: stretch;
     color: #1f2d3a;
   }
 
@@ -169,8 +169,6 @@
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
-    align-self: stretch;
-    min-height: 0;
   }
 
   .book-hero-visual img {
@@ -178,7 +176,6 @@
     width: auto;
     max-width: min(100%, 32rem);
     height: auto;
-    max-height: min(76vh, 44rem);
     object-fit: contain;
     /* Ombre douce sous la couverture (inspiration Huberman / Protocols) */
     filter: drop-shadow(0 30px 45px rgba(40, 28, 14, 0.32));
@@ -280,6 +277,10 @@
       text-align: left;
     }
 
+    .book-hero-inner {
+      gap: 3rem;
+    }
+
     .book-hero-visual {
       order: -1;
       align-items: center;
@@ -288,8 +289,7 @@
 
     .book-hero-visual img {
       max-width: min(80vw, 22rem);
-      max-height: 24rem;
-      margin-bottom: -2rem;
+      margin-bottom: 0;
     }
 
     .book-hero-copy {
@@ -297,8 +297,16 @@
       padding: 0 0 2.5rem;
     }
 
+    .book-preorder {
+      padding: 2.75rem 0 3.25rem;
+    }
+
     .book-preorder-inner {
       grid-template-columns: 1fr;
+    }
+
+    .book-preorder-copy {
+      gap: 1rem;
     }
 
     .book-preorder-spacer {
