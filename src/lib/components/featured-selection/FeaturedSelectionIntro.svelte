@@ -1,6 +1,15 @@
 <script lang="ts">
-  export let title: string;
-  export let subtitle: string | undefined = undefined;
+  import type { Snippet } from "svelte";
+
+  let {
+    title,
+    subtitle,
+    children,
+  }: {
+    title: string;
+    subtitle?: string;
+    children: Snippet;
+  } = $props();
 </script>
 
 <header class="intro">
@@ -9,7 +18,7 @@
     <p class="subtitle">{subtitle}</p>
   {/if}
   <div class="copy">
-    <slot />
+    {@render children()}
   </div>
 </header>
 

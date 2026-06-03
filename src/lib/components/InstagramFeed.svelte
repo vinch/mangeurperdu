@@ -28,13 +28,16 @@
       <div class="instagram-intro">
         <h2 id="instagram-heading">Dernières publications</h2>
         <p class="instagram-meta">
-          <a href={instagramProfileUrl} target="_blank" rel="noopener noreferrer"
-            >@{instagramHandle}</a
+          <a
+            class="instagram-handle"
+            href={instagramProfileUrl}
+            target="_blank"
+            rel="noopener noreferrer">@{instagramHandle}</a
           >
         </p>
       </div>
       <a
-        class="btn-dark-lg btn-external"
+        class="btn-light-lg btn-external"
         href={instagramProfileUrl}
         target="_blank"
         rel="noopener noreferrer"
@@ -91,8 +94,11 @@
     {:else if !loadError}
       <p class="instagram-notice">
         Aucune publication à afficher pour le moment. Retrouvez le fil sur
-        <a href={instagramProfileUrl} target="_blank" rel="noopener noreferrer"
-          >@{instagramHandle}</a
+        <a
+          class="instagram-handle"
+          href={instagramProfileUrl}
+          target="_blank"
+          rel="noopener noreferrer">@{instagramHandle}</a
         >.
       </p>
     {/if}
@@ -102,8 +108,8 @@
 <style>
   .instagram-section {
     padding: 0 0 4rem;
-    background: #fff;
-    border-top: 1px solid rgba(17, 24, 39, 0.06);
+    background: #1a2330;
+    color: #fff;
   }
 
   .instagram-inner {
@@ -131,38 +137,45 @@
     font-size: 1.35rem;
     font-weight: 700;
     line-height: 1.15;
-    color: var(--mp-text, #1f2d3a);
+    color: #fff;
   }
 
   .instagram-meta {
     margin: 0;
     font-size: 0.92rem;
     line-height: 1.35;
-    color: var(--mp-muted, rgba(31, 45, 58, 0.72));
   }
 
-  .instagram-meta a {
-    color: inherit;
+  :global(a.instagram-handle),
+  :global(a.instagram-handle:visited) {
+    color: #c8b8d8;
     font-weight: 600;
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-color: rgba(200, 184, 216, 0.55);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
   }
 
-  .instagram-meta a:hover {
-    color: var(--mp-purple, #654074);
+  :global(a.instagram-handle:hover) {
+    color: #e2d6eb;
+    text-decoration-color: rgba(226, 214, 235, 0.7);
   }
 
   .instagram-notice {
     margin: 0;
     padding: 1.25rem 1.5rem;
     border-radius: 0.75rem;
-    background: rgba(101, 64, 116, 0.06);
-    color: var(--mp-muted, rgba(31, 45, 58, 0.72));
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.78);
     line-height: 1.55;
   }
 
-  .instagram-notice a {
-    color: var(--mp-purple, #654074);
-    font-weight: 600;
+  .instagram-notice :global(a.instagram-handle) {
+    color: #c8b8d8;
+  }
+
+  .instagram-notice :global(a.instagram-handle:hover) {
+    color: #e2d6eb;
   }
 
   .instagram-grid {
@@ -253,7 +266,7 @@
       margin-bottom: 1.75rem;
     }
 
-    .instagram-header :global(.btn-dark-lg) {
+    .instagram-header :global(.btn-light-lg) {
       width: 100%;
       text-align: center;
     }

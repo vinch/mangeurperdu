@@ -1,5 +1,8 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { page } from "$app/state";
+
+  let { children }: { children: Snippet } = $props();
 
   // La landing "Ressources" utilise la mise en page large commune ;
   // la page "fat" garde une colonne de lecture étroite.
@@ -10,7 +13,7 @@
 
 <div class="resource-surface">
   <main class="resource-main mp-prose" class:is-wide={wide}>
-    <slot />
+    {@render children()}
   </main>
 </div>
 

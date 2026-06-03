@@ -43,16 +43,14 @@
     notify?: Snippet;
   } = $props();
 
-  const initialTrackIndex = slides.length <= 1 ? 0 : slides.length;
-
-  let trackIndex = $state(initialTrackIndex);
+  let trackIndex = $state(0);
   let transitionEnabled = $state(false);
   let trackLayoutReady = $state(false);
   let paused = $state(false);
   let viewportEl = $state<HTMLDivElement | undefined>(undefined);
   let trackEl = $state<HTMLDivElement | undefined>(undefined);
   let trackOffset = $state(0);
-  let slidesLengthSynced = $state(slides.length);
+  let lastSlideCount = 0;
   let loopSnapTimer: ReturnType<typeof setTimeout> | undefined;
   let isLoopSnapping = $state(false);
   let isAnimating = $state(false);
@@ -295,9 +293,9 @@
   });
 
   $effect(() => {
-    const n = slides.length;
-    if (n === slidesLengthSynced) return;
-    slidesLengthSynced = n;
+    const n = count;
+    if (n === lastSlideCount) return;
+    lastSlideCount = n;
     if (!trackLayoutReady) return;
     const index = n <= 1 ? 0 : n;
     void jumpWithoutAnimation(index);
@@ -351,14 +349,11 @@
     aria-label="À la une"
     onmouseenter={() => (paused = true)}
     onmouseleave={() => (paused = false)}
+    ontouchstart={onTouchStart}
+    ontouchend={onTouchEnd}
+    ontouchcancel={onTouchCancel}
   >
-    <div
-      class="carousel-viewport"
-      bind:this={viewportEl}
-      ontouchstart={onTouchStart}
-      ontouchend={onTouchEnd}
-      ontouchcancel={onTouchCancel}
-    >
+    <div class="carousel-viewport" bind:this={viewportEl}>
       <div
         class="carousel-track"
         class:is-ready={trackLayoutReady}
@@ -384,7 +379,6 @@
               aria-roledescription="slide"
               aria-label="{slide.title}"
               aria-hidden={!isActive}
-              tabindex={isActive ? 0 : -1}
             >
               {#if isPhotoHero && slide.imageSrc}
                 <div class="slide-visual">
@@ -961,6 +955,7 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      line-clamp: 3;
       overflow: hidden;
     }
 

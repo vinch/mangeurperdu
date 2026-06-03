@@ -1,14 +1,26 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { onMount } from "svelte";
 
-  export let local = "vincent.battaglia";
-  export let domain = "gmail.com";
-  export let subject: string | undefined = undefined;
-  export let body: string | undefined = undefined;
-  export let className = "";
-  export let ariaLabel: string | undefined = undefined;
+  let {
+    local = "vincent.battaglia",
+    domain = "gmail.com",
+    subject,
+    body,
+    className = "",
+    ariaLabel,
+    children,
+  }: {
+    local?: string;
+    domain?: string;
+    subject?: string;
+    body?: string;
+    className?: string;
+    ariaLabel?: string;
+    children: Snippet;
+  } = $props();
 
-  let href = "";
+  let href = $state("");
 
   onMount(() => {
     const email = `${local}@${domain}`;
@@ -21,6 +33,6 @@
 </script>
 
 <a class={className} {href} aria-label={ariaLabel}>
-  <slot />
+  {@render children()}
 </a>
 

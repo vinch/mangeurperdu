@@ -1,9 +1,15 @@
+<script lang="ts">
+  import type { Snippet } from "svelte";
+
+  let { children }: { children: Snippet } = $props();
+</script>
+
 <svelte:head>
   <!-- Meta par défaut (surchargées par les pages) -->
   <meta name="robots" content="index, follow" />
 </svelte:head>
 
-<slot />
+{@render children()}
 
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap");
@@ -89,7 +95,7 @@
           .btn-light-sm
         ):not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
           .back-link
-        ):not(.primary):not(.place-link)
+        ):not(.primary):not(.place-link):not(.instagram-handle):not(.post-card)
     ) {
     color: var(--mp-link);
     text-decoration: underline;
@@ -108,7 +114,7 @@
           .btn-light-sm
         ):not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
           .back-link
-        ):not(.primary):not(.place-link):hover
+        ):not(.primary):not(.place-link):not(.instagram-handle):not(.post-card):hover
     ) {
     color: var(--mp-link-hover);
     text-decoration-color: var(--mp-link);
@@ -120,7 +126,7 @@
           .btn-light-sm
         ):not(.cta):not(.cta-secondary):not(.brand):not(.row):not(
           .back-link
-        ):not(.primary):not(.place-link):visited
+        ):not(.primary):not(.place-link):not(.instagram-handle):not(.post-card):visited
     ) {
     color: var(--mp-link);
   }

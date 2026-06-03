@@ -1,4 +1,8 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
+
+  let { children }: { children: Snippet } = $props();
+
   const year = new Date().getFullYear();
 </script>
 
@@ -11,7 +15,7 @@
   </header>
 
   <main class="ency-main mp-prose">
-    <slot />
+    {@render children()}
   </main>
 
   <footer class="ency-footer">
