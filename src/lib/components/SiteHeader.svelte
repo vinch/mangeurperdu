@@ -5,6 +5,7 @@
   let mobileOpen = $state(false);
 
   const navItems = [
+    { href: "/", label: "Accueil" },
     { href: "/livre", label: "Livre" },
     { href: "/conferences", label: "Conférences" },
     { href: "/about", label: "À propos" },
