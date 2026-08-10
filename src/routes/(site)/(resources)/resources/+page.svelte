@@ -2,7 +2,7 @@
   <title>Ressources — Mangeur Perdu</title>
   <meta
     name="description"
-    content="Ressources : étude sur les graisses et huiles, base additifs."
+    content="Ressources : étude sur les graisses et huiles, base additifs, liste de courses FIFTY."
   />
 </svelte:head>
 
@@ -30,6 +30,21 @@
         <span class="hint"
           >Une compilation exhaustive des additifs alimentaires, et de leur
           dangerosité potentielle.</span
+        >
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a
+        class="row"
+        href="https://fifty.mangeurperdu.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="label">FIFTY</span>
+        <span class="hint"
+          >Liste de courses minimaliste : cinquante essentiels, rien de
+          plus.</span
         >
         <span class="arrow" aria-hidden="true">→</span>
       </a>
