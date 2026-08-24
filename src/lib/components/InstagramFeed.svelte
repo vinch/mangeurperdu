@@ -20,6 +20,12 @@
     if (oneLine.length <= max) return oneLine;
     return `${oneLine.slice(0, max - 1)}…`;
   }
+
+  function hideBrokenImage(event: Event) {
+    const img = event.currentTarget as HTMLImageElement;
+    img.style.display = "none";
+    img.closest("li")?.remove();
+  }
 </script>
 
 <section class="instagram-section" aria-labelledby="instagram-heading">
@@ -65,6 +71,7 @@
                 alt={truncateCaption(post.caption) || "Publication Instagram"}
                 loading="lazy"
                 decoding="async"
+                onerror={hideBrokenImage}
               />
               <span class="post-veil" aria-hidden="true"></span>
               <span class="post-stats" aria-hidden="true">

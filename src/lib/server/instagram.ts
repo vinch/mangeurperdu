@@ -41,17 +41,40 @@ function feedUrl(): string {
   return env.BEHOLD_FEED_URL?.trim() || beholdFeedUrl;
 }
 
-function pickMediaUrl(post: BeholdPost): string | null {
-  const sized =
+function pickSizedMediaUrl(post: BeholdPost): string | null {
+  return (
     post.sizes?.medium?.mediaUrl ??
     post.sizes?.large?.mediaUrl ??
-    post.sizes?.small?.mediaUrl;
+    post.sizes?.small?.mediaUrl ??
+    post.sizes?.full?.mediaUrl ??
+    null
+  );
+}
+
+function pickMediaUrl(post: BeholdPost): string | null {
+  const sized = pickSizedMediaUrl(post);
+
+  // Behold CDN URLs are stable; Instagram CDN URLs expire quickly.
+  if (sized) return sized;
 
   if (post.mediaType === "VIDEO") {
-    return post.thumbnailUrl ?? sized ?? post.mediaUrl ?? null;
+    return post.thumbnailUrl ?? post.mediaUrl ?? null;
   }
 
-  return sized ?? post.mediaUrl ?? post.thumbnailUrl ?? null;
+  return post.mediaUrl ?? post.thumbnailUrl ?? null;
+}
+
+async function isMediaUrlReachable(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      signal: AbortSignal.timeout(5_000),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }
 
 function mapBeholdPost(item: BeholdPost): InstagramPost | null {
@@ -76,6 +99,7 @@ export async function getInstagramPosts(
   try {
     const res = await fetch(feedUrl(), {
       headers: { Accept: "application/json" },
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -87,10 +111,17 @@ export async function getInstagramPosts(
     }
 
     const json = (await res.json()) as BeholdFeed;
-    const posts = (json.posts ?? [])
-      .slice(0, limit)
+    const candidates = (json.posts ?? [])
       .map(mapBeholdPost)
       .filter((p): p is InstagramPost => p !== null);
+
+    const posts: InstagramPost[] = [];
+    for (const post of candidates) {
+      if (posts.length >= limit) break;
+      if (await isMediaUrlReachable(post.mediaUrl)) {
+        posts.push(post);
+      }
+    }
 
     return { posts, error: null };
   } catch (err) {
