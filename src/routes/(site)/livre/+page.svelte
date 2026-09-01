@@ -1,17 +1,22 @@
 <script>
   import BookNotifyForm from "$lib/components/BookNotifyForm.svelte";
+  import {
+    BOOK_META_DESCRIPTION,
+    BOOK_PUBLISHER,
+    BOOK_PUBLISHER_LOGO,
+    BOOK_PUBLISHER_URL,
+    BOOK_RELEASE_FULL,
+    BOOK_RELEASE_SHORT,
+  } from "$lib/book";
 </script>
 
 <svelte:head>
   <title>Mangeur Perdu — Le livre</title>
-  <meta
-    name="description"
-    content="Pourquoi on ne sait plus comment manger. Sortie du livre Mangeur Perdu prévue au premier trimestre 2027."
-  />
+  <meta name="description" content={BOOK_META_DESCRIPTION} />
   <meta property="og:title" content="Mangeur Perdu — Le livre" />
   <meta
     property="og:description"
-    content="Nous n’avons jamais eu autant d’informations sur l’alimentation. Et pourtant, nous n’avons jamais été aussi perdus."
+    content="Nous n’avons jamais eu autant d’informations sur l’alimentation. Et pourtant, nous n’avons jamais été aussi perdus. {BOOK_RELEASE_FULL}."
   />
   <meta property="og:image" content="https://mangeurperdu.com/social.jpg" />
 </svelte:head>
@@ -29,7 +34,23 @@
         </p>
         <p class="availability">
           <span class="availability-mark" aria-hidden="true"></span>
-          Sortie prévue au premier trimestre 2027
+          {BOOK_RELEASE_SHORT}
+        </p>
+        <p class="publisher">
+          <a
+            class="publisher-link"
+            href={BOOK_PUBLISHER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={BOOK_PUBLISHER_LOGO}
+              alt={BOOK_PUBLISHER}
+              width="180"
+              height="48"
+              loading="eager"
+            />
+          </a>
         </p>
       </div>
 
@@ -83,6 +104,9 @@
         <p>
           Ce livre n’apporte pas de réponses toutes faites. Il propose
           mieux&nbsp;: une nouvelle façon de regarder son assiette.
+        </p>
+        <p class="release-note">
+          {BOOK_RELEASE_FULL}.
         </p>
         <a class="text-link" href="/about">À propos de l’auteur →</a>
       </div>
@@ -145,6 +169,27 @@
     font-size: 1.05rem;
     font-weight: 700;
     color: #1f2d3a;
+  }
+
+  .publisher {
+    margin: 1.6rem 0 0;
+  }
+
+  .publisher-link {
+    display: inline-block;
+    text-decoration: none;
+    opacity: 0.92;
+    transition: opacity 0.15s ease;
+  }
+
+  .publisher-link:hover {
+    opacity: 1;
+  }
+
+  .publisher-link img {
+    display: block;
+    width: auto;
+    height: 3.25rem;
   }
 
   .availability-mark {
@@ -256,6 +301,11 @@
     color: var(--mp-muted, rgba(31, 45, 58, 0.72));
     line-height: 1.65;
     max-width: 62ch;
+  }
+
+  .release-note {
+    font-weight: 600;
+    color: #1f2d3a;
   }
 
   .text-link {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import EmailLink from "$lib/components/EmailLink.svelte";
+  import { BOOK_RELEASE_ABOUT, BOOK_TITLE } from "$lib/book";
 
   const contactSubject = "Contact — Mangeur Perdu";
 </script>
@@ -8,7 +9,7 @@
   <title>À propos — Mangeur Perdu</title>
   <meta
     name="description"
-    content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu, cofondateur de Rebel Food."
+    content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu (mars 2027, Thierry Souccar Éditions), cofondateur de Rebel Food."
   />
 </svelte:head>
 
@@ -26,7 +27,8 @@
           rel="noopener noreferrer">Rebel Food</a
         >
         . Il s’intéresse depuis plus de dix ans aux questions de nutrition et de
-        santé. À travers
+        santé. Son premier livre, <em>{BOOK_TITLE}</em>, paraît {BOOK_RELEASE_ABOUT}.
+        À travers
         <a
           href="https://www.instagram.com/mangeurperdu/"
           target="_blank"

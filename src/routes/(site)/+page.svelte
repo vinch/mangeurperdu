@@ -1,6 +1,7 @@
 <script>
   import HeroCarousel from "$lib/components/HeroCarousel.svelte";
   import InstagramFeed from "$lib/components/InstagramFeed.svelte";
+  import { BOOK_RELEASE_TAGLINE } from "$lib/book";
 
   let { data } = $props();
 
@@ -9,7 +10,7 @@
       id: "book",
       title: "Mangeur Perdu",
       subtitle: "Pourquoi on ne sait plus comment manger",
-      body: "Le livre qui questionne nos certitudes alimentaires — sortie prévue au premier trimestre 2027.",
+      body: BOOK_RELEASE_TAGLINE,
       ctaLabel: "Découvrir le livre",
       ctaHref: "/livre",
       theme: "warm",

@@ -1,5 +1,6 @@
 <script lang="ts">
   import EmailLink from "$lib/components/EmailLink.svelte";
+  import { BOOK_RELEASE_ABOUT } from "$lib/book";
 
   type ConferenceItem = {
     id: string;
@@ -117,8 +118,8 @@ Merci !`;
       <h1>Conférences</h1>
       <p>
         Je donne des conférences pour expliquer les idées au cœur du livre
-        <em>Mangeur Perdu</em> et partager une lecture claire de notre rapport moderne
-        à l’alimentation.
+        <em>Mangeur Perdu</em> (à paraître {BOOK_RELEASE_ABOUT}) et partager une
+        lecture claire de notre rapport moderne à l’alimentation.
       </p>
     </div>
     <figure class="conf-hero-photo">
