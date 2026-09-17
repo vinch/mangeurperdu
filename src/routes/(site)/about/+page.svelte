@@ -9,7 +9,7 @@
   <title>À propos — Mangeur Perdu</title>
   <meta
     name="description"
-    content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu (mars 2027, Thierry Souccar Éditions), cofondateur de Rebel Food."
+    content="Vincent Battaglia : informaticien de formation, entrepreneur tech, auteur de Mangeur Perdu (mars 2027, Thierry Souccar Éditions)."
   />
 </svelte:head>
 
@@ -19,16 +19,10 @@
     <div class="about-hero-copy">
       <h1>À propos</h1>
       <p class="lead">
-        Vincent Battaglia est informaticien de formation, entrepreneur dans la
-        tech et cofondateur de
-        <a
-          href="https://www.rebelfood.eu"
-          target="_blank"
-          rel="noopener noreferrer">Rebel Food</a
-        >
-        . Il s’intéresse depuis plus de dix ans aux questions de nutrition et de
-        santé. Son premier livre, <em>{BOOK_TITLE}</em>, paraît {BOOK_RELEASE_ABOUT}.
-        À travers
+        Vincent Battaglia est informaticien de formation et entrepreneur dans la
+        tech. Il s’intéresse depuis plus de dix ans aux questions de nutrition
+        et de santé. Son premier livre, <em>{BOOK_TITLE}</em>, paraît
+        {BOOK_RELEASE_ABOUT}. À travers
         <a
           href="https://www.instagram.com/mangeurperdu/"
           target="_blank"
