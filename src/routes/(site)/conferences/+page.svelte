@@ -1,27 +1,19 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import EmailLink from "$lib/components/EmailLink.svelte";
   import { BOOK_RELEASE_ABOUT } from "$lib/book";
+  import type {
+    ConferenceItem,
+    ConferencesPayload,
+  } from "$lib/types/conference";
 
-  type ConferenceItem = {
-    id: string;
-    starts_at: string;
-    ends_at: string | null;
-    venue: string;
-    address: string | null;
-    paf: string | null;
-    country: string | null;
-    status: string;
-    ticket_url: string | null;
-    rsvp_url: string | null;
-  };
+  /** Allonge le skeleton pour le tester en local (ex. 5000). Remettre à 0 en prod. */
+  const SKELETON_EXTRA_MS = 0;
 
-  type ConferencesPageData = {
-    future: ConferenceItem[];
-    past: ConferenceItem[];
-    loadError: string | null;
-  };
-
-  let { data }: { data: ConferencesPageData } = $props();
+  let future = $state<ConferenceItem[]>([]);
+  let past = $state<ConferenceItem[]>([]);
+  let loadError = $state<string | null>(null);
+  let loading = $state(true);
 
   const bookingSubject =
     "Demande d’intervention (organisateur) — Mangeur Perdu";
@@ -33,6 +25,46 @@ Date(s) envisagée(s) :
 Format souhaité (conférence, atelier, Q&A, autre) :
 
 Merci !`;
+
+  onMount(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/conferences");
+        const payload = (await res.json()) as ConferencesPayload;
+        if (cancelled) return;
+
+        if (!res.ok || payload.error) {
+          loadError =
+            payload.error ??
+            "Impossible de charger les conférences pour le moment.";
+          future = [];
+          past = [];
+          return;
+        }
+
+        future = payload.future ?? [];
+        past = payload.past ?? [];
+        loadError = null;
+      } catch {
+        if (!cancelled) {
+          loadError = "Impossible de charger les conférences pour le moment.";
+          future = [];
+          past = [];
+        }
+      } finally {
+        if (SKELETON_EXTRA_MS > 0) {
+          await new Promise((r) => setTimeout(r, SKELETON_EXTRA_MS));
+        }
+        if (!cancelled) loading = false;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  });
 
   function fmt(dateStr: string) {
     const d = new Date(dateStr);
@@ -133,20 +165,38 @@ Merci !`;
     </figure>
   </section>
 
-  {#if data.loadError}
-    <p class="error">{data.loadError}</p>
+  {#if loadError}
+    <p class="error">{loadError}</p>
   {/if}
 
   <div class="conf-columns">
     <div class="conf-dates">
-      <section aria-labelledby="upcoming-title">
+      <section aria-labelledby="upcoming-title" aria-busy={loading}>
         <h2 id="upcoming-title">Dates à venir</h2>
 
-        {#if data.future.length === 0}
+        {#if loading}
+          <ul class="list" aria-hidden="true">
+            {#each [1, 2, 3] as i (i)}
+              <li class="item skeleton-item">
+                <div class="meta">
+                  <div class="skel skel-date"></div>
+                  <div class="skel skel-venue"></div>
+                  <div class="skel skel-place"></div>
+                </div>
+                <div class="item-actions">
+                  <div class="skel skel-btn"></div>
+                </div>
+              </li>
+            {/each}
+          </ul>
+          <p class="visually-hidden" role="status">
+            Chargement des conférences…
+          </p>
+        {:else if future.length === 0}
           <p class="empty">Aucune date annoncée pour le moment.</p>
         {:else}
           <ul class="list">
-            {#each data.future as item (item.id)}
+            {#each future as item (item.id)}
               <li class="item">
                 <div class="meta">
                   <p class="date">{fmt(item.starts_at)}</p>
@@ -233,11 +283,11 @@ Merci !`;
         {/if}
       </section>
 
-      {#if data.past.length > 0}
+      {#if !loading && past.length > 0}
         <section aria-labelledby="past-title" class="past">
           <h2 id="past-title">Dates passées</h2>
           <ul class="list">
-            {#each data.past as item (item.id)}
+            {#each past as item (item.id)}
               <li class="item past-item">
                 <div class="meta">
                   <p class="date">{fmt(item.starts_at)}</p>
@@ -548,6 +598,66 @@ Merci !`;
     background: #f7f8fa;
   }
 
+  .skeleton-item {
+    pointer-events: none;
+  }
+
+  .skel {
+    border-radius: 6px;
+    background: linear-gradient(
+      90deg,
+      rgba(31, 45, 58, 0.06) 0%,
+      rgba(31, 45, 58, 0.12) 50%,
+      rgba(31, 45, 58, 0.06) 100%
+    );
+    background-size: 200% 100%;
+    animation: skel-shimmer 1.2s ease-in-out infinite;
+  }
+
+  .skel-date {
+    width: min(18rem, 70%);
+    height: 1.15rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .skel-venue {
+    width: min(12rem, 45%);
+    height: 0.85rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .skel-place {
+    width: min(14rem, 55%);
+    height: 0.75rem;
+  }
+
+  .skel-btn {
+    width: 5.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @keyframes skel-shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
   @media (max-width: 900px) {
     .conf-columns {
       grid-template-columns: 1fr;
@@ -589,6 +699,12 @@ Merci !`;
 
     .date {
       font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skel {
+      animation: none;
     }
   }
 </style>

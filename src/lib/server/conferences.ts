@@ -1,15 +1,13 @@
-import type { PageServerLoad } from "./$types";
 import { getSupabaseServer } from "$lib/server/supabase";
+import type { ConferenceItem, ConferencesPayload } from "$lib/types/conference";
 
-export const prerender = false;
-
-export const load: PageServerLoad = async () => {
+export async function loadConferences(): Promise<ConferencesPayload> {
   const supabaseServer = getSupabaseServer();
   if (!supabaseServer) {
     return {
       future: [],
       past: [],
-      loadError:
+      error:
         "Configuration Supabase manquante (SUPABASE_URL / SUPABASE_ANON_KEY).",
     };
   }
@@ -25,15 +23,15 @@ export const load: PageServerLoad = async () => {
     return {
       future: [],
       past: [],
-      loadError: "Impossible de charger les conférences pour le moment.",
+      error: "Impossible de charger les conférences pour le moment.",
     };
   }
 
   const now = Date.now();
-  const future = [];
-  const past = [];
+  const future: ConferenceItem[] = [];
+  const past: ConferenceItem[] = [];
 
-  for (const item of data ?? []) {
+  for (const item of (data ?? []) as ConferenceItem[]) {
     const startMs = new Date(item.starts_at).getTime();
     if (Number.isFinite(startMs) && startMs < now) past.push(item);
     else future.push(item);
@@ -41,6 +39,5 @@ export const load: PageServerLoad = async () => {
 
   past.reverse();
 
-  return { future, past, loadError: null };
-};
-
+  return { future, past, error: null };
+}
