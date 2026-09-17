@@ -8,6 +8,7 @@
     { href: "/", label: "Accueil" },
     { href: "/livre", label: "Livre" },
     { href: "/conferences", label: "Conférences" },
+    { href: "/interviews", label: "Interviews" },
     { href: "/about", label: "À propos" },
   ] as const;
 
