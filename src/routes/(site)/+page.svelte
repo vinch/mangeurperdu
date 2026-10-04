@@ -40,7 +40,7 @@
       ctaHref: "/conferences",
       theme: "neutral",
       tone: "dark",
-      imageSrcs: ["/conference.jpg", "/conference2.jpg"],
+      imageSrc: "/conference2.jpg",
       imageAlt: "Conférence Mangeur Perdu",
     },
   ];
