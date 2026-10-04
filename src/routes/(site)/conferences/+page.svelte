@@ -1,11 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import CrossfadeImages from "$lib/components/CrossfadeImages.svelte";
   import EmailLink from "$lib/components/EmailLink.svelte";
   import { BOOK_RELEASE_ABOUT } from "$lib/book";
   import type {
     ConferenceItem,
     ConferencesPayload,
   } from "$lib/types/conference";
+
+  const conferencePhotos = ["/conference.jpg", "/conference2.jpg"];
 
   /** Allonge le skeleton pour le tester en local (ex. 5000). Remettre à 0 en prod. */
   const SKELETON_EXTRA_MS = 0;
@@ -155,11 +158,11 @@ Merci !`;
       </p>
     </div>
     <figure class="conf-hero-photo">
-      <img
-        src="/conference.jpg"
+      <CrossfadeImages
+        sources={conferencePhotos}
         alt="Conférence Mangeur Perdu"
-        width="1200"
-        height="800"
+        width={1200}
+        height={800}
         loading="eager"
       />
     </figure>
@@ -391,12 +394,9 @@ Merci !`;
     align-self: stretch;
   }
 
-  .conf-hero-photo img {
-    display: block;
+  .conf-hero-photo :global(.crossfade) {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
   }
 
   .conf-hero-copy {
@@ -679,7 +679,7 @@ Merci !`;
       order: -1;
     }
 
-    .conf-hero-photo img {
+    .conf-hero-photo :global(.crossfade) {
       height: auto;
       aspect-ratio: 3 / 2;
     }

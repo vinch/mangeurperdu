@@ -9,6 +9,8 @@
     ctaHref?: string;
     ctaExternal?: boolean;
     imageSrc?: string;
+    /** Plusieurs sources → fondu enchaîné (prioritaire sur imageSrc). */
+    imageSrcs?: string[];
     imageAlt?: string;
     theme: "warm" | "purple" | "neutral";
     /** Texte clair sur fond foncé, ou texte foncé sur fond clair (défaut selon theme). */
@@ -17,6 +19,7 @@
 
   import type { Snippet } from "svelte";
   import { tick } from "svelte";
+  import CrossfadeImages from "$lib/components/CrossfadeImages.svelte";
 
   function slideTone(slide: HeroSlide): "light" | "dark" {
     if (slide.tone) return slide.tone;
@@ -27,8 +30,14 @@
     return tone === "light" ? "btn-light-lg" : "btn-dark-lg";
   }
 
+  function slideImageSources(slide: HeroSlide): string[] {
+    if (slide.imageSrcs?.length) return slide.imageSrcs;
+    if (slide.imageSrc) return [slide.imageSrc];
+    return [];
+  }
+
   function slideUsesPhotoHero(slide: HeroSlide) {
-    return slide.theme === "neutral" && Boolean(slide.imageSrc);
+    return slide.theme === "neutral" && slideImageSources(slide).length > 0;
   }
 
   let {
@@ -380,9 +389,17 @@
               aria-label="{slide.title}"
               aria-hidden={!isActive}
             >
-              {#if isPhotoHero && slide.imageSrc}
+              {#if isPhotoHero}
+                {@const photoSources = slideImageSources(slide)}
                 <div class="slide-visual">
-                  <img src={slide.imageSrc} alt={slide.imageAlt ?? ""} />
+                  {#if photoSources.length > 1}
+                    <CrossfadeImages
+                      sources={photoSources}
+                      alt={slide.imageAlt ?? ""}
+                    />
+                  {:else}
+                    <img src={photoSources[0]} alt={slide.imageAlt ?? ""} />
+                  {/if}
                 </div>
                 <div class="slide-scrim" aria-hidden="true"></div>
               {/if}
@@ -417,10 +434,20 @@
                 </div>
               </div>
 
-              {#if slide.imageSrc && !isPhotoHero}
-                <div class="slide-visual">
-                  <img src={slide.imageSrc} alt={slide.imageAlt ?? ""} />
-                </div>
+              {#if !isPhotoHero}
+                {@const visualSources = slideImageSources(slide)}
+                {#if visualSources.length > 0}
+                  <div class="slide-visual">
+                    {#if visualSources.length > 1}
+                      <CrossfadeImages
+                        sources={visualSources}
+                        alt={slide.imageAlt ?? ""}
+                      />
+                    {:else}
+                      <img src={visualSources[0]} alt={slide.imageAlt ?? ""} />
+                    {/if}
+                  </div>
+                {/if}
               {/if}
             </article>
           {/each}
@@ -734,10 +761,14 @@
     width: 100%;
   }
 
+  .slide-photo-hero .slide-visual :global(.crossfade),
   .slide-photo-hero .slide-visual img {
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  .slide-photo-hero .slide-visual img {
     object-fit: cover;
     object-position: center;
   }
@@ -909,11 +940,15 @@
       align-items: flex-end;
     }
 
+    .slide-photo-hero .slide-visual :global(.crossfade),
     .slide-photo-hero .slide-visual img {
       width: 100%;
       height: 100%;
       max-width: none;
       max-height: none;
+    }
+
+    .slide-photo-hero .slide-visual img {
       object-fit: cover;
       object-position: center;
     }
