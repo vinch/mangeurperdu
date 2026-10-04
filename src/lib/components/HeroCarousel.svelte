@@ -12,6 +12,8 @@
     /** Plusieurs sources → fondu enchaîné (prioritaire sur imageSrc). */
     imageSrcs?: string[];
     imageAlt?: string;
+    /** Cadrage CSS object-position (ex. "30% center"). */
+    imageObjectPosition?: string;
     theme: "warm" | "purple" | "neutral";
     /** Texte clair sur fond foncé, ou texte foncé sur fond clair (défaut selon theme). */
     tone?: "light" | "dark";
@@ -398,7 +400,11 @@
                       alt={slide.imageAlt ?? ""}
                     />
                   {:else}
-                    <img src={photoSources[0]} alt={slide.imageAlt ?? ""} />
+                    <img
+                      src={photoSources[0]}
+                      alt={slide.imageAlt ?? ""}
+                      style:object-position={slide.imageObjectPosition}
+                    />
                   {/if}
                 </div>
                 <div class="slide-scrim" aria-hidden="true"></div>

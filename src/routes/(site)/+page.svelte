@@ -42,6 +42,7 @@
       tone: "dark",
       imageSrc: "/conference2.jpg",
       imageAlt: "Conférence Mangeur Perdu",
+      imageObjectPosition: "32% center",
     },
   ];
 </script>
