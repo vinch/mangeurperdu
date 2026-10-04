@@ -42,7 +42,8 @@
       tone: "dark",
       imageSrc: "/conference2.jpg",
       imageAlt: "Conférence Mangeur Perdu",
-      imageObjectPosition: "32% center",
+      /* Zoom ancré à gauche : pousse l’orateur dans la zone claire, coupe le rideau. */
+      imagePanX: "12%",
     },
   ];
 </script>

@@ -14,6 +14,11 @@
     imageAlt?: string;
     /** Cadrage CSS object-position (ex. "30% center"). */
     imageObjectPosition?: string;
+    /**
+     * Point de focus horizontal du visuel photo-hero (ex. "30%").
+     * Applique un zoom pour recentrer la scène (cover seul ne croppe souvent pas en X).
+     */
+    imagePanX?: string;
     theme: "warm" | "purple" | "neutral";
     /** Texte clair sur fond foncé, ou texte foncé sur fond clair (défaut selon theme). */
     tone?: "light" | "dark";
@@ -403,7 +408,9 @@
                     <img
                       src={photoSources[0]}
                       alt={slide.imageAlt ?? ""}
+                      class:is-panned={Boolean(slide.imagePanX)}
                       style:object-position={slide.imageObjectPosition}
+                      style:--image-pan-x={slide.imagePanX}
                     />
                   {/if}
                 </div>
@@ -765,6 +772,7 @@
     position: absolute;
     inset: 0;
     width: 100%;
+    overflow: hidden;
   }
 
   .slide-photo-hero .slide-visual :global(.crossfade),
@@ -777,6 +785,11 @@
   .slide-photo-hero .slide-visual img {
     object-fit: cover;
     object-position: center;
+  }
+
+  .slide-photo-hero .slide-visual img.is-panned {
+    transform: scale(1.45);
+    transform-origin: var(--image-pan-x, 35%) center;
   }
 
   .slide-scrim {
