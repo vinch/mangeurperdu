@@ -36,6 +36,7 @@
 
 <div class="content-page sources">
   <header class="content-head">
+    <p class="mp-eyebrow">Références</p>
     <h1>Sources</h1>
     <p class="content-intro">
       Liens vers des articles dont je parle sur
@@ -107,11 +108,12 @@
   }
 
   .empty {
-    color: #56616b;
+    color: var(--mp-muted);
   }
 
   .source-name {
-    font-weight: 750;
+    font-weight: 650;
+    color: var(--mp-text);
   }
 
   .sep {

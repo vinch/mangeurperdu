@@ -20,13 +20,13 @@
 <style>
   /* Harmonisé avec les autres pages : fond "papier" autour, contenu blanc centré. */
   .resource-surface {
-    background: #fff;
+    background: transparent;
     color: var(--mp-text);
     padding: 0;
   }
 
   .resource-main {
-    background: #fff;
+    background: transparent;
     /* Même colonne de lecture que les pages `.page mp-prose` (À propos, Conférences). */
     max-width: 75ch;
     margin: 0 auto;
@@ -38,12 +38,12 @@
   /* Landing Ressources : pleine largeur, alignée comme Sources / Collaborations. */
   .resource-main.is-wide {
     max-width: var(--mp-shell-max);
-    padding: 2.5rem var(--mp-shell-pad-x, 1.25rem) 4rem;
+    padding: 3rem var(--mp-shell-pad-x, 1.25rem) 5.5rem;
   }
 
   /* Même titre que la page Conférences : `h1` global + marges du bloc `.header-copy h1`. */
   .resource-main :global(h1) {
     margin-top: 0;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.85rem;
   }
 </style>

@@ -17,6 +17,7 @@
   <section class="about-hero" aria-label="Présentation">
     <div class="about-hero-visual" aria-hidden="true"></div>
     <div class="about-hero-copy">
+      <p class="mp-eyebrow">L’auteur</p>
       <h1>À propos</h1>
       <p class="lead">
         Vincent Battaglia est informaticien de formation et entrepreneur dans la
@@ -48,7 +49,7 @@
     width: 100%;
     max-width: var(--mp-shell-max);
     margin: 0 auto;
-    padding: 0 var(--mp-shell-pad-x) 4rem;
+    padding: 0 var(--mp-shell-pad-x) 5.5rem;
     box-sizing: border-box;
   }
 
@@ -57,10 +58,17 @@
     display: grid;
     grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     align-items: stretch;
-    min-height: clamp(24rem, 56vh, 34rem);
-    border-radius: 1.35rem;
+    min-height: clamp(26rem, 62vh, 38rem);
+    border-radius: var(--mp-radius-xl);
     overflow: hidden;
-    background-color: #e9be60;
+    background:
+      radial-gradient(
+        ellipse 50% 70% at 22% 60%,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0) 70%
+      ),
+      linear-gradient(135deg, #f0c86e 0%, #e7b754 60%, #dca744 100%);
+    box-shadow: inset 0 0 0 1px rgba(20, 28, 38, 0.05);
   }
 
   /* Photo limitée à la colonne gauche : proportionnelle à la largeur, jamais rognée. */
@@ -84,26 +92,36 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 2.75rem 3rem 2.75rem 0;
-    color: #1f2d3a;
+    padding: 3rem 4rem 3rem 0;
+    color: var(--mp-ink);
+  }
+
+  .about-hero-copy :global(.mp-eyebrow) {
+    color: rgba(20, 28, 38, 0.7);
   }
 
   .about-hero-copy h1 {
-    margin: 0 0 1rem;
+    margin: 0 0 1.25rem;
     font-family: var(--mp-font-sans);
-    font-size: clamp(2.15rem, 3.8vw, 3.15rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: #1f2d3a;
+    font-size: clamp(2.5rem, 4.6vw, 3.9rem);
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--mp-ink);
   }
 
   .lead {
-    margin: 0 0 1.5rem;
-    color: rgba(31, 45, 58, 0.82);
-    font-size: 1.125rem;
-    line-height: 1.65;
-    max-width: 52ch;
+    margin: 0 0 2rem;
+    color: rgba(20, 28, 38, 0.8);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    max-width: 50ch;
+  }
+
+  .lead :global(a) {
+    color: var(--mp-ink) !important;
+    text-decoration-color: rgba(20, 28, 38, 0.4) !important;
+    font-weight: 600 !important;
   }
 
   .actions {

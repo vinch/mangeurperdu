@@ -13,6 +13,7 @@
 </script>
 
 <header class="intro">
+  <p class="mp-eyebrow">Partenaires</p>
   <h1>{title}</h1>
   {#if subtitle}
     <p class="subtitle">{subtitle}</p>
@@ -27,19 +28,32 @@
     margin-bottom: 0;
   }
 
+  .intro h1 {
+    margin-bottom: 0.85rem;
+  }
+
   .subtitle {
-    margin-top: -0.25rem;
-    margin-bottom: 1rem;
-    font-weight: 750;
-    letter-spacing: -0.01em;
-    color: var(--mp-muted);
-    font-size: 1.1rem;
+    margin: 0 0 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--mp-line);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--mp-text);
+    font-size: 1.3rem;
+    line-height: 1.35;
   }
 
   .copy :global(p) {
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.2rem;
     color: var(--mp-muted);
-    max-width: 75ch;
+    font-size: 1.075rem;
+    line-height: 1.7;
+    max-width: 62ch;
+  }
+
+  .copy :global(p:first-child) {
+    font-size: 1.2rem;
+    color: var(--mp-text);
   }
 </style>
 
