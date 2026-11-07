@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "additives:import": "node --env-file=.env scripts/additives/import.mjs"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.0",

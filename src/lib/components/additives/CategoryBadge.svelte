@@ -1,8 +1,10 @@
 <script lang="ts">
+  import { categoryLabel } from "$lib/additives/labels";
+
   let { category }: { category: string } = $props();
 </script>
 
-<span class="category-badge">{category}</span>
+<span class="category-badge">{categoryLabel(category)}</span>
 
 <style>
   .category-badge {

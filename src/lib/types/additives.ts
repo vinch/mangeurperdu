@@ -4,14 +4,19 @@ export type AdditiveListItem = {
   id: string;
   e_number: string;
   reference_name: string;
+  /** Nom français préféré (additive_names), sinon null. */
+  name_fr: string | null;
   category: string;
   risk_level: RiskLevel | null;
+  /** Tous les noms + numéro + catégorie, normalisés pour la recherche. */
+  search_text: string;
 };
 
 export type AdditiveDetail = {
   id: string;
   e_number: string;
   reference_name: string;
+  name_fr: string | null;
   category: string;
   origin: string | null;
   description: string | null;
@@ -64,6 +69,7 @@ export type AdditivesListingPageData = {
   categories: string[];
   search: string;
   category: string;
+  risk: RiskLevel | "";
   loadError: string | null;
 };
 
@@ -73,5 +79,6 @@ export type AdditiveDetailPageData = {
   names: AdditiveName[];
   foodUsage: AdditiveFoodUsage[];
   studies: AdditiveStudy[];
+  related: AdditiveListItem[];
   loadError: string | null;
 };

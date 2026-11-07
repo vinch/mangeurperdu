@@ -1,32 +1,46 @@
 <script lang="ts">
   import type { RiskLevel } from "$lib/types/additives";
+  import { RISK_LONG_LABELS, RISK_SHORT_LABELS } from "$lib/additives/labels";
 
   let {
     level,
+    compact = false,
   }: {
     level: RiskLevel;
+    /** Libellé court (listes), le libellé complet passe en infobulle. */
+    compact?: boolean;
   } = $props();
-
-  const labels: Record<RiskLevel, string> = {
-    blue: "Aucun signal préoccupant documenté à ce stade",
-    yellow: "Signaux ou incertitudes à surveiller",
-    red: "Signaux préoccupants ou restriction forte",
-  };
 </script>
 
-<span class="risk-badge" data-level={level}>{labels[level]}</span>
+<span
+  class="risk-badge"
+  data-level={level}
+  title={compact ? RISK_LONG_LABELS[level] : undefined}
+>
+  <span class="dot" aria-hidden="true"></span>
+  {compact ? RISK_SHORT_LABELS[level] : RISK_LONG_LABELS[level]}
+</span>
 
 <style>
   .risk-badge {
     display: inline-flex;
     align-items: center;
+    gap: 0.4rem;
     max-width: 100%;
-    padding: 0.22rem 0.55rem;
+    padding: 0.22rem 0.6rem 0.22rem 0.5rem;
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 600;
     line-height: 1.35;
     border: 1px solid transparent;
+  }
+
+  .dot {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
   }
 
   .risk-badge[data-level="blue"] {
