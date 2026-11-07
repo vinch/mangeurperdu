@@ -62,9 +62,14 @@ function titleSimilarity(a, b) {
 async function crossref(doi) {
   const key = doi.toLowerCase();
   if (key in cache) return cache[key];
-  const res = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}`, {
-    headers: { "User-Agent": "mangeurperdu.com additives encyclopedia (+https://mangeurperdu.com/additives)" },
-  });
+  let res;
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    res = await fetch(`https://api.crossref.org/works/${encodeURIComponent(doi)}`, {
+      headers: { "User-Agent": "mangeurperdu.com additives encyclopedia (+https://mangeurperdu.com/additives)" },
+    });
+    if (res.status !== 429 && res.status < 500) break;
+    await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+  }
   let value = null;
   if (res.ok) {
     const m = (await res.json()).message;
