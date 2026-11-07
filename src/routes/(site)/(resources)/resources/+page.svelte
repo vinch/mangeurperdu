@@ -8,6 +8,7 @@
 
 <div class="resources">
   <header class="content-head">
+    <p class="mp-eyebrow">Outils</p>
     <h1>Ressources</h1>
     <p class="content-intro">
       Outils et bases de données pour creuser les sujets abordés sur le compte.

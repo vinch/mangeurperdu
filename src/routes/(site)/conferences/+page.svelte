@@ -84,6 +84,18 @@ Merci !`;
     return s.charAt(0).toLocaleUpperCase("fr-FR") + s.slice(1);
   }
 
+  /** Jour / mois abrégé / année pour le badge calendrier (fuseau Paris). */
+  function badgeParts(dateStr: string) {
+    const d = new Date(dateStr);
+    const part = (opts: Intl.DateTimeFormatOptions) =>
+      d.toLocaleString("fr-FR", { timeZone: "Europe/Paris", ...opts });
+    return {
+      day: part({ day: "numeric" }),
+      month: part({ month: "short" }).replace(".", ""),
+      year: part({ year: "numeric" }),
+    };
+  }
+
   /** Affichage pays : emoji pour FR / BE uniquement (reste = code tel quel). */
   function countryEmoji(code: string | null | undefined): string {
     const c = code?.trim().toUpperCase();
@@ -150,6 +162,7 @@ Merci !`;
 <div class="conf-page">
   <section class="conf-hero">
     <div class="conf-hero-copy">
+      <p class="mp-eyebrow">Sur scène</p>
       <h1>Conférences</h1>
       <p>
         Je donne des conférences pour expliquer les idées au cœur du livre
@@ -175,12 +188,18 @@ Merci !`;
   <div class="conf-columns">
     <div class="conf-dates">
       <section aria-labelledby="upcoming-title" aria-busy={loading}>
-        <h2 id="upcoming-title">Dates à venir</h2>
+        <h2 id="upcoming-title">
+          Dates à venir
+          {#if !loading && future.length > 0}
+            <span class="count">{future.length}</span>
+          {/if}
+        </h2>
 
         {#if loading}
           <ul class="list" aria-hidden="true">
             {#each [1, 2, 3] as i (i)}
               <li class="item skeleton-item">
+                <div class="skel skel-badge"></div>
                 <div class="meta">
                   <div class="skel skel-date"></div>
                   <div class="skel skel-venue"></div>
@@ -200,7 +219,13 @@ Merci !`;
         {:else}
           <ul class="list">
             {#each future as item (item.id)}
+              {@const b = badgeParts(item.starts_at)}
               <li class="item">
+                <div class="date-badge" aria-hidden="true">
+                  <span class="badge-month">{b.month}</span>
+                  <span class="badge-day">{b.day}</span>
+                  <span class="badge-year">{b.year}</span>
+                </div>
                 <div class="meta">
                   <p class="date">{fmt(item.starts_at)}</p>
                   <p class="venue-name">{item.venue}</p>
@@ -291,7 +316,13 @@ Merci !`;
           <h2 id="past-title">Dates passées</h2>
           <ul class="list">
             {#each past as item (item.id)}
+              {@const b = badgeParts(item.starts_at)}
               <li class="item past-item">
+                <div class="date-badge" aria-hidden="true">
+                  <span class="badge-month">{b.month}</span>
+                  <span class="badge-day">{b.day}</span>
+                  <span class="badge-year">{b.year}</span>
+                </div>
                 <div class="meta">
                   <p class="date">{fmt(item.starts_at)}</p>
                   <p class="venue-name">{item.venue}</p>
@@ -353,7 +384,8 @@ Merci !`;
     </div>
 
     <aside class="conf-organizer" aria-labelledby="organizer-cta-title">
-      <h2 id="organizer-cta-title">Organisateurs</h2>
+      <p class="mp-eyebrow" data-tone="light">Organisateurs</p>
+      <h2 id="organizer-cta-title">Inviter Mangeur Perdu</h2>
       <p class="organizer-hint">
         Vous organisez un événement et souhaitez m’inviter à intervenir&nbsp;?
         Écrivez-moi en partageant les informations clés de votre projet.
@@ -375,7 +407,7 @@ Merci !`;
     width: 100%;
     max-width: var(--mp-shell-max);
     margin: 0 auto;
-    padding: 0 var(--mp-shell-pad-x) 4rem;
+    padding: 0 var(--mp-shell-pad-x) 5.5rem;
     box-sizing: border-box;
   }
 
@@ -384,9 +416,11 @@ Merci !`;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: center;
-    border-radius: 1.35rem;
+    min-height: 28rem;
+    border-radius: var(--mp-radius-xl);
     overflow: hidden;
-    background: #f0f3f6;
+    background: var(--mp-sand);
+    box-shadow: inset 0 0 0 1px rgba(20, 28, 38, 0.05);
   }
 
   .conf-hero-photo {
@@ -400,65 +434,88 @@ Merci !`;
   }
 
   .conf-hero-copy {
-    padding: 2.5rem 3rem;
-    color: #1f2d3a;
+    padding: 3rem 3.5rem 3rem 4rem;
+    color: var(--mp-ink);
   }
 
   .conf-hero-copy h1 {
-    margin: 0 0 0.85rem;
+    margin: 0 0 1.1rem;
     font-family: var(--mp-font-sans);
-    font-size: clamp(2.15rem, 3.8vw, 3.15rem);
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: #1f2d3a;
+    font-size: clamp(2.5rem, 4.6vw, 3.9rem);
+    font-weight: 750;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    color: var(--mp-ink);
   }
 
-  .conf-hero-copy p {
+  .conf-hero-copy p:not(.mp-eyebrow) {
     margin: 0;
-    font-size: 1.125rem;
-    line-height: 1.55;
-    color: var(--mp-muted, rgba(31, 45, 58, 0.72));
+    max-width: 40ch;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--mp-muted);
   }
 
   /* —— Deux colonnes : dates / organisateurs —— */
   .conf-columns {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 20rem;
-    gap: 2.5rem;
-    margin-top: 2.5rem;
+    gap: 3rem;
+    margin-top: 4rem;
     align-items: start;
   }
 
   .conf-dates section + section {
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   .conf-organizer {
     position: sticky;
-    top: calc(96px + 1.5rem);
-    padding: 1.5rem;
-    border-radius: 14px;
+    top: calc(72px + 1.5rem);
+    padding: 1.75rem;
+    border-radius: var(--mp-radius-xl);
     border: none;
-    background: rgba(101, 64, 116, 0.08);
+    background:
+      radial-gradient(
+        ellipse 80% 60% at 100% 0%,
+        rgba(210, 112, 15, 0.22) 0%,
+        rgba(210, 112, 15, 0) 70%
+      ),
+      var(--mp-night);
+    color: #fff;
+    box-shadow: var(--mp-shadow-lg);
     box-sizing: border-box;
   }
 
+  .conf-organizer :global(.mp-eyebrow) {
+    margin-bottom: 0.85rem;
+  }
+
   .conf-organizer h2 {
-    margin: 0 0 0.6rem;
+    margin: 0 0 0.75rem;
     font-size: 1.4rem;
-    color: #2c3e50;
+    line-height: 1.2;
+    color: #fff;
   }
 
   .organizer-hint {
-    margin: 0 0 1.1rem;
-    color: #56616b;
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.95rem;
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   .conf-organizer :global(.cta) {
     margin-top: 0;
+    width: 100%;
+    background: #fff;
+    color: var(--mp-ink);
+    border-color: #fff;
+  }
+
+  .conf-organizer :global(.cta:hover) {
+    background: var(--mp-orange-soft);
+    border-color: var(--mp-orange-soft);
   }
 
   .error {
@@ -467,33 +524,101 @@ Merci !`;
     font-weight: 600;
   }
 
-  h2 {
-    font-size: 2rem;
+  .conf-dates h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: clamp(1.6rem, 2.6vw, 2rem);
+    font-weight: 750;
+    letter-spacing: -0.035em;
     margin-top: 0;
-    margin-bottom: 0.9rem;
-    color: #2c3e50;
+    margin-bottom: 1.25rem;
+    color: var(--mp-ink);
+  }
+
+  .count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding: 0 0.5rem;
+    border-radius: 999px;
+    background: var(--mp-orange-soft);
+    color: var(--mp-orange-ink);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
   .empty {
-    color: #56616b;
+    padding: 1.5rem;
+    border-radius: var(--mp-radius-lg);
+    border: 1px dashed var(--mp-border);
+    color: var(--mp-muted);
   }
 
   .list {
     list-style: none;
     padding: 0;
     display: grid;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
 
   .item {
-    border: none;
-    border-radius: 16px;
-    padding: 1.25rem 1.4rem;
+    border: 1px solid var(--mp-line);
+    border-radius: var(--mp-radius-lg);
+    padding: 1.35rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1.25rem;
-    background: #f4f6f8;
+    gap: 1.5rem;
+    background: var(--mp-surface);
+    box-shadow: var(--mp-shadow-sm);
+    transition:
+      box-shadow 0.2s var(--mp-ease),
+      border-color 0.2s var(--mp-ease);
+  }
+
+  .item:not(.past-item):not(.skeleton-item):hover {
+    border-color: rgba(210, 112, 15, 0.3);
+    box-shadow: var(--mp-shadow-md);
+  }
+
+  .date-badge {
+    flex-shrink: 0;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    padding: 0.6rem 0 0.65rem;
+    border-radius: 14px;
+    background: var(--mp-orange-soft);
+    color: var(--mp-orange-ink);
+    line-height: 1;
+    text-align: center;
+  }
+
+  .badge-month {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge-day {
+    margin: 0.2rem 0 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 750;
+    letter-spacing: -0.04em;
+    color: var(--mp-ink);
+  }
+
+  .badge-year {
+    font-size: 0.72rem;
+    font-weight: 600;
+    opacity: 0.8;
   }
 
   .meta {
@@ -502,25 +627,25 @@ Merci !`;
   }
 
   .date {
-    margin: 0 0 0.35rem;
-    font-size: clamp(1.05rem, 2.5vw, 1.28rem);
-    font-weight: 800;
-    line-height: 1.25;
+    margin: 0 0 0.3rem;
+    font-size: clamp(1.02rem, 2.2vw, 1.15rem);
+    font-weight: 700;
+    line-height: 1.3;
     letter-spacing: -0.02em;
-    color: #1f2d3a;
-    white-space: nowrap;
+    color: var(--mp-ink);
   }
 
   .venue-name {
-    margin: 0 0 0.3rem;
+    margin: 0 0 0.35rem;
     font-size: 0.95rem;
-    font-weight: 650;
+    font-weight: 600;
     line-height: 1.35;
-    color: #56616b;
+    color: var(--mp-text);
   }
 
   .place {
-    color: #56616b;
+    color: var(--mp-muted);
+    font-size: 0.92rem;
     margin: 0;
   }
 
@@ -540,24 +665,24 @@ Merci !`;
   }
 
   .place-link:hover {
-    color: #654074;
+    color: var(--mp-purple);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
   .paf {
-    margin: 0.4rem 0 0;
+    margin: 0.65rem 0 0;
     display: inline-flex;
     align-items: center;
     width: fit-content;
     max-width: 100%;
-    padding: 0.2rem 0.55rem;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    font-weight: 550;
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
     font-variant-numeric: tabular-nums;
-    color: #6a737c;
-    background: #fff;
+    color: var(--mp-text);
+    background: var(--mp-sand);
     border: none;
   }
 
@@ -589,13 +714,22 @@ Merci !`;
     cursor: not-allowed;
   }
 
-  .past {
-    margin-top: 1rem;
-    opacity: 0.95;
+  .past-item {
+    background: transparent;
+    box-shadow: none;
   }
 
-  .past-item {
-    background: #f7f8fa;
+  .past-item .date-badge {
+    background: rgba(27, 38, 50, 0.05);
+    color: var(--mp-subtle);
+  }
+
+  .past-item .badge-day {
+    color: var(--mp-muted);
+  }
+
+  .past-item .date {
+    color: var(--mp-text);
   }
 
   .skeleton-item {
@@ -629,6 +763,13 @@ Merci !`;
   .skel-place {
     width: min(14rem, 55%);
     height: 0.75rem;
+  }
+
+  .skel-badge {
+    flex-shrink: 0;
+    width: 4.5rem;
+    height: 4.6rem;
+    border-radius: 14px;
   }
 
   .skel-btn {
@@ -684,16 +825,36 @@ Merci !`;
       aspect-ratio: 3 / 2;
     }
 
+    .conf-hero {
+      min-height: 0;
+    }
+
     .conf-hero-copy {
-      padding: 1.5rem 1.5rem 1.75rem;
+      padding: 1.75rem 1.5rem 2rem;
+    }
+
+    .conf-columns {
+      margin-top: 2.75rem;
     }
 
     .item {
-      flex-direction: column;
-      align-items: stretch;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 1rem;
+      padding: 1.15rem;
+    }
+
+    .date-badge {
+      width: 3.75rem;
+    }
+
+    .badge-day {
+      font-size: 1.45rem;
     }
 
     .item-actions {
+      grid-column: 1 / -1;
       justify-content: flex-start;
     }
 

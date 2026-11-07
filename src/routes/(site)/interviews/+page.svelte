@@ -49,6 +49,7 @@
 
 <div class="content-page interviews">
   <header class="content-head">
+    <p class="mp-eyebrow">En vidéo</p>
     <h1>Interviews</h1>
     <p class="content-intro">
       Passages vidéo et échanges autour de
@@ -107,26 +108,28 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
   .interview {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    gap: 1.5rem 1.75rem;
+    gap: 1.5rem 2.5rem;
     align-items: center;
-    padding: 1.15rem;
-    border-radius: 16px;
-    background: #f4f6f8;
+    padding: 0.85rem 2.5rem 0.85rem 0.85rem;
+    border-radius: var(--mp-radius-xl);
+    border: 1px solid var(--mp-line);
+    background: var(--mp-surface);
+    box-shadow: var(--mp-shadow-sm);
   }
 
   .player {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    background: #1f2d3a;
+    background: var(--mp-night);
   }
 
   .player iframe {
@@ -142,33 +145,34 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.35rem;
+    gap: 0.5rem;
   }
 
   .when {
-    margin: 0;
-    font-size: 0.82rem;
+    margin: 0 0 0.25rem;
+    font-size: 0.75rem;
     font-weight: 650;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--mp-purple);
+    color: var(--mp-orange-ink);
   }
 
   .title {
     margin: 0;
     font-family: var(--mp-font-sans);
-    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-size: clamp(1.3rem, 2.4vw, 1.65rem);
     font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
-    color: #1f2d3a;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--mp-ink);
   }
 
   .host {
-    margin: 0 0 0.65rem;
-    font-size: 0.95rem;
+    margin: 0 0 1rem;
+    font-size: 0.92rem;
+    font-weight: 500;
     line-height: 1.4;
-    color: #6a737c;
+    color: var(--mp-muted);
   }
 
   .sep {
@@ -185,12 +189,12 @@
   @media (max-width: 800px) {
     .interview {
       grid-template-columns: 1fr;
-      gap: 1rem;
-      padding: 0.9rem;
+      gap: 1.1rem;
+      padding: 0.65rem;
     }
 
     .copy {
-      padding: 0 0.15rem 0.35rem;
+      padding: 0 0.6rem 0.85rem;
     }
   }
 </style>

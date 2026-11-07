@@ -137,15 +137,17 @@
     background: transparent;
     border-bottom: 1px solid transparent;
     transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease,
-      height 0.2s ease;
+      background-color 0.25s var(--mp-ease, ease),
+      border-color 0.25s var(--mp-ease, ease),
+      height 0.25s var(--mp-ease, ease);
   }
 
   .site-header[data-scrolled="true"] {
     --header-height: 72px;
-    background: #fff;
-    border-bottom-color: rgba(17, 24, 39, 0.08);
+    background: rgba(251, 250, 247, 0.82);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+    backdrop-filter: saturate(1.6) blur(16px);
+    border-bottom-color: var(--mp-line, rgba(17, 24, 39, 0.08));
   }
 
   .inner {
@@ -160,7 +162,7 @@
     align-items: center;
     gap: 0.75rem;
     text-decoration: none;
-    color: var(--mp-text, #1f2d3a);
+    color: var(--mp-ink, #141c26);
     flex-shrink: 0;
   }
 
@@ -170,38 +172,63 @@
     border-radius: 50%;
     object-fit: cover;
     display: block;
+    box-shadow:
+      0 0 0 2px #fff,
+      0 0 0 3px rgba(210, 112, 15, 0.35);
+    transition: transform 0.3s var(--mp-ease, ease);
+  }
+
+  .brand:hover .brand-logo {
+    transform: rotate(-6deg) scale(1.04);
   }
 
   .brand-name {
-    font-size: 0.98rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-size: 1.02rem;
+    font-weight: 750;
+    letter-spacing: -0.03em;
   }
 
   .nav {
     display: flex;
     align-items: center;
-    gap: 1.75rem;
+    gap: 0.25rem;
     margin-left: auto;
   }
 
-  .nav a {
+  .nav-desktop a {
+    position: relative;
     text-decoration: none;
-    font-size: 0.98rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--mp-text, #1f2d3a);
-    padding: 0.2rem 0;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.15s ease;
+    font-size: 0.94rem;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    color: var(--mp-muted, #5a6470);
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    transition:
+      color 0.2s var(--mp-ease, ease),
+      background-color 0.2s var(--mp-ease, ease);
   }
 
-  .nav a:hover {
-    border-bottom-color: rgba(31, 45, 58, 0.2);
+  .nav-desktop a:hover {
+    color: var(--mp-ink, #141c26);
+    background: rgba(27, 38, 50, 0.05);
   }
 
-  .nav a.is-active {
-    border-bottom-color: var(--mp-purple, #654074);
+  .nav-desktop a.is-active {
+    color: var(--mp-ink, #141c26);
+    font-weight: 650;
+  }
+
+  .nav-desktop a.is-active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0.1rem;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--mp-orange, #d2700f);
   }
 
   .menu-btn {
@@ -211,10 +238,11 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    border: 1px solid rgba(17, 24, 39, 0.1);
+    border: 1px solid var(--mp-line, rgba(17, 24, 39, 0.1));
     border-radius: 50%;
     background: #fff;
     cursor: pointer;
+    box-shadow: var(--mp-shadow-sm);
   }
 
   .menu-btn:focus-visible {
@@ -231,14 +259,29 @@
     width: 16px;
     height: 2px;
     border-radius: 999px;
-    background: #1f2d3a;
+    background: var(--mp-ink, #141c26);
+    transition:
+      transform 0.25s var(--mp-ease, ease),
+      opacity 0.2s ease;
+  }
+
+  .menu-btn[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-btn[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-btn[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   .menu-backdrop {
     position: fixed;
     inset: var(--header-height) 0 0 0;
-    background: rgba(17, 24, 39, 0.2);
-    backdrop-filter: blur(2px);
+    background: rgba(20, 28, 38, 0.28);
+    backdrop-filter: blur(3px);
     z-index: 60;
     border: none;
     cursor: pointer;
@@ -249,18 +292,19 @@
     top: var(--header-height);
     left: 0;
     right: 0;
-    padding: 0.75rem var(--mp-shell-pad-x, 1.25rem) 1rem;
+    padding: 0.5rem var(--mp-shell-pad-x, 1.25rem) 1.25rem;
     margin: 0;
     display: grid;
-    gap: 0.15rem;
-    background: #fff;
-    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
-    transform: translateY(-6px);
+    gap: 0;
+    background: var(--mp-bg, #fff);
+    border-bottom: 1px solid var(--mp-line, rgba(17, 24, 39, 0.08));
+    box-shadow: 0 24px 40px -24px rgba(20, 28, 38, 0.3);
+    transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
     transition:
-      transform 160ms ease,
-      opacity 160ms ease;
+      transform 200ms var(--mp-ease, ease),
+      opacity 200ms ease;
     z-index: 70;
   }
 
@@ -271,15 +315,43 @@
   }
 
   .nav-mobile a {
-    padding: 0.6rem 0;
-    border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.95rem 0;
+    font-size: 1.15rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--mp-ink, #141c26);
+    text-decoration: none;
+    border-bottom: 1px solid var(--mp-line, rgba(17, 24, 39, 0.06));
+  }
+
+  .nav-mobile a:last-child {
+    border-bottom: none;
+  }
+
+  .nav-mobile a::after {
+    content: "→";
+    color: var(--mp-subtle, #8a9099);
+    font-weight: 500;
+  }
+
+  .nav-mobile a.is-active {
+    color: var(--mp-orange-ink, #a8540a);
+  }
+
+  .nav-mobile a.is-active::after {
+    color: var(--mp-orange, #d2700f);
   }
 
   @media (max-width: 820px) {
     .site-header,
     .site-header[data-scrolled="true"] {
       --header-height: 72px;
-      background: #fff;
+      background: rgba(251, 250, 247, 0.9);
+      -webkit-backdrop-filter: saturate(1.6) blur(16px);
+      backdrop-filter: saturate(1.6) blur(16px);
       transition: border-color 0.2s ease;
     }
 
@@ -288,11 +360,7 @@
     }
 
     .site-header[data-scrolled="true"] {
-      border-bottom-color: rgba(17, 24, 39, 0.08);
-    }
-
-    .brand-name {
-      display: none;
+      border-bottom-color: var(--mp-line, rgba(17, 24, 39, 0.08));
     }
 
     .nav-desktop {
@@ -301,6 +369,12 @@
 
     .menu-btn {
       display: inline-flex;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .brand-name {
+      display: none;
     }
   }
 </style>

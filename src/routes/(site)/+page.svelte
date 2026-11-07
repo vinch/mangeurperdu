@@ -1,13 +1,14 @@
 <script>
   import HeroCarousel from "$lib/components/HeroCarousel.svelte";
   import InstagramFeed from "$lib/components/InstagramFeed.svelte";
-  import { BOOK_RELEASE_TAGLINE } from "$lib/book";
+  import { BOOK_RELEASE_MONTH, BOOK_RELEASE_TAGLINE } from "$lib/book";
 
   let { data } = $props();
 
   const heroSlides = [
     {
       id: "book",
+      eyebrow: `Le livre · ${BOOK_RELEASE_MONTH}`,
       title: "Mangeur Perdu",
       subtitle: "Pourquoi on ne sait plus comment manger",
       body: BOOK_RELEASE_TAGLINE,
@@ -20,6 +21,7 @@
     },
     {
       id: "rebel-food",
+      eyebrow: "Application",
       title: "Rebel Food",
       subtitle: "Changer durablement, pas en trois jours.",
       body: "Une app de changement d’habitudes simple, progressive, conçue pour tenir dans la vraie vie.",
@@ -33,6 +35,7 @@
     },
     {
       id: "conferences",
+      eyebrow: "Sur scène",
       title: "Conférences",
       subtitle: "C'est toujours mieux de se voir en vrai.",
       body: "Retrouvez les prochaines dates de mes interventions autour de l’alimentation.",
@@ -88,6 +91,6 @@
 
 <style>
   .home {
-    background: #fff;
+    background: var(--mp-bg);
   }
 </style>

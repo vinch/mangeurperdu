@@ -72,7 +72,7 @@
 
   .collab-cta {
     position: sticky;
-    top: calc(96px + 1.5rem);
+    top: calc(72px + 1.5rem);
     margin: 0;
   }
 

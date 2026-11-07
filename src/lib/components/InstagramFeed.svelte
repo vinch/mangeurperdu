@@ -32,6 +32,7 @@
   <div class="instagram-inner site-container">
     <header class="instagram-header">
       <div class="instagram-intro">
+        <p class="mp-eyebrow" data-tone="light">Instagram</p>
         <h2 id="instagram-heading">Dernières publications</h2>
         <p class="instagram-meta">
           <a
@@ -114,43 +115,60 @@
 
 <style>
   .instagram-section {
-    padding: 0 0 4rem;
-    background: #1a2330;
+    position: relative;
+    padding: 0 0 5.5rem;
+    background:
+      radial-gradient(
+        ellipse 50% 60% at 85% 0%,
+        rgba(210, 112, 15, 0.12) 0%,
+        rgba(210, 112, 15, 0) 70%
+      ),
+      var(--mp-night, #141c26);
     color: #fff;
   }
 
   .instagram-inner {
-    padding-top: 3.5rem;
+    padding-top: 5rem;
   }
 
   .instagram-header {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     flex-wrap: wrap;
   }
 
   .instagram-intro {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.5rem;
+  }
+
+  .instagram-intro :global(.mp-eyebrow) {
+    margin-bottom: 0.5rem;
   }
 
   .instagram-header h2 {
     margin: 0;
     font-family: var(--mp-font-sans);
-    font-size: 1.35rem;
-    font-weight: 700;
-    line-height: 1.15;
+    font-size: clamp(1.85rem, 3.2vw, 2.6rem);
+    font-weight: 750;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
     color: #fff;
   }
 
   .instagram-meta {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: 0.98rem;
     line-height: 1.35;
+  }
+
+  .instagram-header :global(.btn-light-lg) {
+    border-color: #fff;
+    box-shadow: none;
   }
 
   :global(a.instagram-handle),
@@ -198,11 +216,13 @@
     position: relative;
     display: block;
     aspect-ratio: 3 / 4;
-    border-radius: var(--mp-radius-md, 14px);
+    border-radius: var(--mp-radius-lg, 18px);
     overflow: hidden;
-    background: #f0f0f0;
+    background: rgba(255, 255, 255, 0.06);
     text-decoration: none;
     color: #fff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+    transform: translateZ(0);
   }
 
   .post-veil,
@@ -220,7 +240,7 @@
 
   .post-card:hover .post-veil,
   .post-card:focus-visible .post-veil {
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(10, 14, 20, 0.55);
   }
 
   .post-stats {
@@ -256,12 +276,28 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s var(--mp-ease, ease);
+  }
+
+  .post-card:hover > img,
+  .post-card:focus-visible > img {
+    transform: scale(1.04);
   }
 
   @media (max-width: 900px) {
     .instagram-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .instagram-section {
+      padding-bottom: 3.5rem;
+    }
+
+    .instagram-inner {
+      padding-top: 3.25rem;
     }
   }
 
