@@ -6,13 +6,14 @@ import {
   getAdditiveFoodUsage,
   getAdditiveNames,
   getAdditiveRiskAssessment,
+  getAdditives,
   getAdditiveStudies,
   normalizeENumber,
 } from "$lib/server/additives";
 
 export const prerender = false;
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params, setHeaders }) => {
   const normalized = normalizeENumber(params.e_number);
 
   if (params.e_number !== normalized) {
@@ -33,28 +34,21 @@ export const load: PageServerLoad = async ({ params }) => {
   );
 
   if (additiveError) {
-    return {
-      additive: null,
-      risk: null,
-      names: [],
-      foodUsage: [],
-      studies: [],
-      loadError: "Impossible de charger cet additif pour le moment.",
-    };
+    throw error(503, "Impossible de charger cet additif pour le moment.");
   }
 
   if (!additive) {
     throw error(404, "Additif introuvable");
   }
 
-  const [riskResult, namesResult, usageResult, studiesResult] = await Promise.all(
-    [
+  const [riskResult, namesResult, usageResult, studiesResult, relatedResult] =
+    await Promise.all([
       getAdditiveRiskAssessment(supabase, additive.id),
       getAdditiveNames(supabase, additive.id),
       getAdditiveFoodUsage(supabase, additive.id),
       getAdditiveStudies(supabase, additive.id),
-    ],
-  );
+      getAdditives(supabase, { category: additive.category }),
+    ]);
 
   const loadError =
     riskResult.error ||
@@ -64,12 +58,19 @@ export const load: PageServerLoad = async ({ params }) => {
       ? "Certaines sections n'ont pas pu être chargées."
       : null;
 
+  if (!loadError) {
+    setHeaders({
+      "cache-control": "public, max-age=0, s-maxage=600, stale-while-revalidate=86400",
+    });
+  }
+
   return {
     additive,
     risk: riskResult.risk,
     names: namesResult.names,
     foodUsage: usageResult.foodUsage,
     studies: studiesResult.studies,
+    related: relatedResult.items.filter((i) => i.id !== additive.id),
     loadError,
   };
 };

@@ -1,15 +1,15 @@
 import type { PageServerLoad } from "./$types";
 import { getSupabaseServer } from "$lib/server/supabase";
-import {
-  getAdditiveCategories,
-  getAdditives,
-} from "$lib/server/additives";
+import { getAdditives } from "$lib/server/additives";
+import { categoryLabel, isRiskLevel } from "$lib/additives/labels";
 
 export const prerender = false;
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load: PageServerLoad = async ({ url, setHeaders }) => {
   const search = url.searchParams.get("q")?.trim() ?? "";
   const category = url.searchParams.get("category")?.trim() ?? "";
+  const riskParam = url.searchParams.get("risk")?.trim() ?? "";
+  const risk = isRiskLevel(riskParam) ? riskParam : "";
 
   const supabase = getSupabaseServer();
   if (!supabase) {
@@ -18,26 +18,32 @@ export const load: PageServerLoad = async ({ url }) => {
       categories: [],
       search,
       category,
+      risk,
       loadError:
         "Configuration Supabase manquante (SUPABASE_URL / SUPABASE_ANON_KEY).",
     };
   }
 
-  const [listResult, categoriesResult] = await Promise.all([
-    getAdditives(supabase, { search, category }),
-    getAdditiveCategories(supabase),
-  ]);
+  // Toute la liste est chargée : les filtres s'appliquent ensuite dans la page,
+  // instantanément côté client et aussi au rendu serveur (sans JS).
+  const { items, error } = await getAdditives(supabase);
 
-  const loadError =
-    listResult.error || categoriesResult.error
-      ? "Impossible de charger les additifs pour le moment."
-      : null;
+  if (!error) {
+    setHeaders({
+      "cache-control": "public, max-age=0, s-maxage=600, stale-while-revalidate=86400",
+    });
+  }
+
+  const categories = [...new Set(items.map((i) => i.category))].sort((a, b) =>
+    categoryLabel(a).localeCompare(categoryLabel(b), "fr"),
+  );
 
   return {
-    items: listResult.items,
-    categories: categoriesResult.categories,
+    items,
+    categories,
     search,
     category,
-    loadError,
+    risk,
+    loadError: error ? "Impossible de charger les additifs pour le moment." : null,
   };
 };

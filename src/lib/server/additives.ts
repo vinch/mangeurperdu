@@ -8,14 +8,19 @@ import type {
   AdditiveStudy,
   RiskLevel,
 } from "$lib/types/additives";
+import { categoryLabel } from "$lib/additives/labels";
+import { normalizeText } from "$lib/additives/filter";
 
 const LIST_SELECT = `
   id,
   e_number,
   reference_name,
   category,
-  additive_risk_assessment ( risk_level )
+  additive_risk_assessment ( risk_level ),
+  additive_names ( name, language_code, is_preferred )
 `;
+
+type NameRow = { name: string; language_code: string; is_preferred: boolean };
 
 type ListRow = {
   id: string;
@@ -26,121 +31,66 @@ type ListRow = {
     | { risk_level: RiskLevel }
     | { risk_level: RiskLevel }[]
     | null;
+  additive_names: NameRow[] | null;
 };
+
+export function preferredFrenchName(names: NameRow[] | null): string | null {
+  const fr = (names ?? []).filter((n) => n.language_code === "fr");
+  return (fr.find((n) => n.is_preferred) ?? fr[0])?.name ?? null;
+}
 
 function mapListRow(row: ListRow): AdditiveListItem {
   const risk = row.additive_risk_assessment;
   const riskLevel = Array.isArray(risk)
     ? (risk[0]?.risk_level ?? null)
     : (risk?.risk_level ?? null);
+  const names = row.additive_names ?? [];
 
   return {
     id: row.id,
     e_number: row.e_number,
     reference_name: row.reference_name,
+    name_fr: preferredFrenchName(names),
     category: row.category,
     risk_level: riskLevel,
+    search_text: normalizeText(
+      [
+        row.e_number,
+        row.reference_name,
+        categoryLabel(row.category),
+        ...names.map((n) => n.name),
+      ].join(" | "),
+    ),
   };
+}
+
+function compareENumbers(a: string, b: string): number {
+  return a.localeCompare(b, "fr", { numeric: true });
 }
 
 export function normalizeENumber(raw: string): string {
   return raw.trim().toUpperCase();
 }
 
-export async function getAdditiveCategories(
-  supabase: SupabaseClient,
-): Promise<{ categories: string[]; error: string | null }> {
-  const { data, error } = await supabase
-    .from("additives")
-    .select("category")
-    .order("category");
-
-  if (error) {
-    return { categories: [], error: error.message };
-  }
-
-  const categories = [
-    ...new Set((data ?? []).map((r) => r.category).filter(Boolean)),
-  ].sort((a, b) => a.localeCompare(b, "fr"));
-
-  return { categories, error: null };
-}
-
+/** Liste complète (~300 lignes) : le filtrage se fait ensuite côté page. */
 export async function getAdditives(
   supabase: SupabaseClient,
-  opts: { search?: string; category?: string } = {},
+  opts: { category?: string } = {},
 ): Promise<{ items: AdditiveListItem[]; error: string | null }> {
-  const search = opts.search?.trim() ?? "";
-  const category = opts.category?.trim() ?? "";
-
-  let query = supabase.from("additives").select(LIST_SELECT).order("e_number");
-
-  if (category) {
-    query = query.eq("category", category);
+  let query = supabase.from("additives").select(LIST_SELECT);
+  if (opts.category) {
+    query = query.eq("category", opts.category);
   }
 
-  if (search) {
-    const pattern = `%${search}%`;
-    query = query.or(
-      `e_number.ilike.${pattern},reference_name.ilike.${pattern},category.ilike.${pattern}`,
-    );
+  const { data, error } = await query;
+
+  if (error) {
+    return { items: [], error: error.message };
   }
 
-  const { data: primaryData, error: primaryError } = await query;
-
-  if (primaryError) {
-    return { items: [], error: primaryError.message };
-  }
-
-  const byId = new Map<string, AdditiveListItem>();
-  for (const row of primaryData ?? []) {
-    byId.set(row.id, mapListRow(row as ListRow));
-  }
-
-  if (search) {
-    const pattern = `%${search}%`;
-    const { data: nameRows, error: nameError } = await supabase
-      .from("additive_names")
-      .select("additive_id")
-      .ilike("name", pattern);
-
-    if (nameError) {
-      return { items: [], error: nameError.message };
-    }
-
-    const extraIds = [
-      ...new Set(
-        (nameRows ?? [])
-          .map((r) => r.additive_id)
-          .filter((id) => id && !byId.has(id)),
-      ),
-    ];
-
-    if (extraIds.length > 0) {
-      let extraQuery = supabase
-        .from("additives")
-        .select(LIST_SELECT)
-        .in("id", extraIds);
-
-      if (category) {
-        extraQuery = extraQuery.eq("category", category);
-      }
-
-      const { data: extraData, error: extraError } = await extraQuery;
-
-      if (extraError) {
-        return { items: [], error: extraError.message };
-      }
-
-      for (const row of extraData ?? []) {
-        byId.set(row.id, mapListRow(row as ListRow));
-      }
-    }
-  }
-
-  const items = [...byId.values()].sort((a, b) =>
-    a.e_number.localeCompare(b.e_number, "fr", { numeric: true }),
-  );
+  const items = ((data ?? []) as ListRow[])
+    .map(mapListRow)
+    .sort((a, b) => compareENumbers(a.e_number, b.e_number));
 
   return { items, error: null };
 }
@@ -152,7 +102,7 @@ export async function getAdditiveByENumber(
   const { data, error } = await supabase
     .from("additives")
     .select(
-      "id, e_number, reference_name, category, origin, description, function_description, typical_use",
+      "id, e_number, reference_name, category, origin, description, function_description, typical_use, additive_names ( name, language_code, is_preferred )",
     )
     .eq("e_number", eNumber)
     .maybeSingle();
@@ -161,7 +111,21 @@ export async function getAdditiveByENumber(
     return { additive: null, error: error.message };
   }
 
-  return { additive: data as AdditiveDetail | null, error: null };
+  if (!data) {
+    return { additive: null, error: null };
+  }
+
+  const { additive_names, ...rest } = data as typeof data & {
+    additive_names: NameRow[] | null;
+  };
+
+  return {
+    additive: {
+      ...rest,
+      name_fr: preferredFrenchName(additive_names),
+    } as AdditiveDetail,
+    error: null,
+  };
 }
 
 export async function getAdditiveRiskAssessment(
